@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,9 +22,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-// Route::middleware('auth:web')->group(function(){
+Route::middleware('auth:web')->group(function(){
     Route::namespace('Panel')->group(function(){
         Route::get('/panel', 'PanelController@index')->name('panel');
     });
-// }
-// );
+}
+);
