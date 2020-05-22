@@ -23,6 +23,24 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        // $output1; 
+        $output2; 
+        $output3; 
+    //  shell_exec('cd /mnt/c/xampp/htdocs && sudo mkdir steineristestfolder');
+    $output = shell_exec('cd / && ls');
+    dd($output);
+    //  echo $output1;
+    //  system('sudo mkdir steineristestfolder',$output2);
+    //  echo $output2;
+    // system('cd /mnt/c/xampp/htdocs && ls',$output3);
+    // echo $output3;
+    // $code = system('ls',$output4);
+    // dd($output4);
+    // dd($output4);
+    //  system('cd /mnt/c/xampp/htdocs/steineristestfolder');
+     
+    //  system('sudo git clone https://github.com/EdvinasMatusevicius/Basic-chat.git',$output3);
+    //  echo $output3;
+     return view('home');
     }
 }
