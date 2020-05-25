@@ -23,12 +23,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // $output1; 
-        $output2; 
-        $output3; 
+        // // $output1; 
+        // $output2; 
+        // $output3; 
     //  shell_exec('cd /mnt/c/xampp/htdocs && sudo mkdir steineristestfolder');
-    $output = shell_exec('cd / && ls');
-    dd($output);
+    // $output = shell_exec('cd / && ls');
+    // dd($output);
     //  echo $output1;
     //  system('sudo mkdir steineristestfolder',$output2);
     //  echo $output2;

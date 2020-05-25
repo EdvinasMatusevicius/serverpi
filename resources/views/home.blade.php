@@ -18,7 +18,10 @@
                     You are logged in!
                     @if (Route::has('panel'))
                     <div class="links">
-                        <a href="{{route('panel')}}">Control panel</a>
+                        <a href="{{route('panel')}}">Project Control panel</a>
+                    </div>
+                    <div class="links">
+                        <a href="{{route('panel')}}">Add new project</a>
                     </div>
                 @endif
                 </div>
