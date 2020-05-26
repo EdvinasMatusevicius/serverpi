@@ -17,11 +17,12 @@
 
                     You are logged in!
                     @if (Route::has('panel'))
+                    {{-- per loopa isprintint esamus projektus su project var --}}
                     <div class="links">
-                        <a href="{{route('panel')}}">Project Control panel</a>
-                    </div>
+                        <a href="{{route('panel',['project'=>'serverpi'])}}">Project Control panel</a>
+                    </div><br>
                     <div class="links">
-                        <a href="{{route('panel')}}">Add new project</a>
+                        <a href="{{route('newApp')}}">Add new project</a>
                     </div>
                 @endif
                 </div>

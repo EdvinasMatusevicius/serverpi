@@ -25,7 +25,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::middleware('auth:web')->group(function(){
 
     Route::namespace('NewApp')->group(function(){
-        Route::get('/new-app', 'PanelController@index')->name('panel');
+        Route::get('/new-app', 'NewAppController@index')->name('newApp');
+        Route::post('/new-app', 'NewAppController@create')->name('newAppCreate');
 
 
     });
@@ -33,7 +34,7 @@ Route::middleware('auth:web')->group(function(){
 
 
     Route::namespace('Panel')->group(function(){
-        Route::get('/panel', 'PanelController@index')->name('panel');
+        Route::get('/{project}/panel', 'PanelController@index')->name('panel');
         
         Route::namespace('Shell')->group(function(){
 
