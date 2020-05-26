@@ -13,6 +13,6 @@ class ShellCmdBuilder
  public function git(string $command, ?string $url = null): string
  {
      // all command builder
-     return 'cd /var/www/serverpi && git '.$command;
+     return 'cd /var/www/serverpi && git '.$command.' 2>&1';
  }
 }
