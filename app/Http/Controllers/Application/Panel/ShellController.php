@@ -26,9 +26,9 @@ class ShellController extends Controller
             // $cmd = ShellCmdBuilder::gitPull($user->name,$request->project);
             $cmd = ShellCmdBuilder::gitPull($request->project,'');//for now pulls serverpi whitch is not in user folder
             $output =shell_exec($cmd);
-            redirect()->route('showshell',['project'=>$request->project])->with('status','git command finished '.$output);
+            redirect()->route('showShell',['project'=>$request->project])->with('status','git command finished '.$output);
         } catch (Exception $exception) {
-            redirect()->route('showshell',['project'=>$request->project])->with('danger','something went wrong '.$exception->getMessage());
+            redirect()->route('showShell',['project'=>$request->project])->with('danger','something went wrong '.$exception->getMessage());
         }
     }
 }
