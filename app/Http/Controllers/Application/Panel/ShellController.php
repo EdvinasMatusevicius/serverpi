@@ -30,7 +30,5 @@ class ShellController extends Controller
         } catch (Exception $exception) {
             redirect()->route('showshell',['project'=>$request->project])->with('danger','something went wrong '.$exception->getMessage());
         }
-
     }
-
 }
