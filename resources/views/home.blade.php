@@ -22,7 +22,7 @@
                         <a href="{{route('panel',['project'=>'serverpi'])}}">Project Control panel</a>
                     </div><br>
                     <div class="links">
-                        <a href="{{route('newApp')}}">Add new project</a>
+                        <a href="{{route('newApplication')}}">Add new project</a>
                     </div>
                 @endif
                 </div>

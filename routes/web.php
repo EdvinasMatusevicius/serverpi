@@ -24,21 +24,14 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::middleware('auth:web')->group(function(){
 
-    Route::namespace('NewApp')->group(function(){
-        Route::get('/new-app', 'NewAppController@index')->name('newApp');
-        Route::post('/new-app', 'NewAppController@create')->name('newAppCreate');
+    Route::namespace('Application')->group(function(){
+        Route::get('/new-application', 'ApplicationController@index')->name('newApplication');
+        Route::post('/new-application', 'ApplicationController@create')->name('newApplicationCreate');
 
-
-    });
-
-
-
-    Route::namespace('Panel')->group(function(){
-        Route::get('/{project}/panel', 'PanelController@index')->name('panel');
-        
-        Route::namespace('Shell')->group(function(){
-
-            $shellRoutes = ['gitpull','gitpush']; 
+        Route::namespace('Panel')->group(function(){
+            Route::get('/{project}/panel', 'PanelController@index')->name('panel');
+            
+            $shellRoutes = ['gitpull','gitstatus']; 
             $projects = ['serverpi'];  //get all projects, add  permitions to user which he can access
             
             
@@ -48,5 +41,5 @@ Route::middleware('auth:web')->group(function(){
             }
         });
     });
-}
-);
+
+});
