@@ -22,9 +22,9 @@ class ApplicationController extends Controller
        $cmd = ShellCmdBuilder::gitClone($user->name,$request->newApplicationName,$request->giturl);
        $output =shell_exec($cmd);
        //SAVE TO DATABASE
-            redirect()->route('panel',['project'=>$request->newApplicationName])->with('status','Your project cloned successfully '.$output);
+        return redirect()->route('panel',['project'=>$request->newApplicationName])->with('status','Your project cloned successfully '.$output);
     } catch (Exception $exception) {
-        redirect()->route('newApplication')->with('danger','something went wrong '.$exception->getMessage());
+        return redirect()->route('newApplication')->with('danger','something went wrong '.$exception->getMessage());
     }
     }
 }
