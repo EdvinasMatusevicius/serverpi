@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace App\Helpers;
 
-use Exception;
 
 /**
  * Class ShellCmdHelper
@@ -13,7 +12,6 @@ use Exception;
 class ShellCmdHelper
 {
 private $wwwRoute = 'cd /var/www';
-private $usableGitComands = ['pull','status'];
 
  public function gitPull(string $userFolder,string $projectFolder): string
  {

@@ -20,7 +20,7 @@ class AdminCreate extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Create new admin';
 
     /**
      * Create a new command instance.

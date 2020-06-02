@@ -19,10 +19,10 @@ class ApplicationController extends Controller
     {
         try {
        $user=auth()->user();
-       $cmd = ShellCmdBuilder::gitClone($user->name,$request->newApplicationName,$request->giturl);
+       $cmd = ShellCmdBuilder::gitClone($user->name,$request->applicationName,$request->giturl);
        $output =shell_exec($cmd);
        //SAVE TO DATABASE
-        return redirect()->route('panel',['project'=>$request->newApplicationName])->with('status','Your project cloned successfully '.$output);
+        return redirect()->route('panel',['project'=>$request->applicationName])->with('status','Your project cloned successfully '.$output);
     } catch (Exception $exception) {
         return redirect()->route('newApplication')->with('danger','something went wrong '.$exception->getMessage());
     }

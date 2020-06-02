@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -23,4 +24,8 @@ class Admin extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime'
     ];
+    public function applications(): HasMany
+    {
+        return $this->hasMany(Application::class);
+    }
 }
