@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateApplicationsTable extends Migration
+class CreateAdminApplicationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,21 @@ class CreateApplicationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('applications', function (Blueprint $table) {
+        Schema::create('admin_applications', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('admin_id');
             $table->string('applicationName');
             $table->timestamps();
         });
-        Schema::table('applications', function (Blueprint $table) {
-            $table->foreign('user_id')
+
+        Schema::table('admin_applications', function (Blueprint $table) {
+            $table->foreign('admin_id')
             ->references('id')
-            ->on('users')
+            ->on('admins')
             ->onUpdate('CASCADE')
             ->onDelete('CASCADE');
     });
-    }
+}
 
     /**
      * Reverse the migrations.
@@ -35,6 +36,6 @@ class CreateApplicationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('applications');
+        Schema::dropIfExists('admin_applications');
     }
 }

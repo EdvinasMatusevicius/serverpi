@@ -5,13 +5,13 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Application extends Model
+class AdminApplication extends Model
 {
     protected $fillable = [
         'applicationName'
     ];
-    public function user():BelongsTo
+    public function admin():BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Admin::class,'admin_id');
     }
 }
