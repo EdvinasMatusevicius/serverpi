@@ -10,8 +10,9 @@ namespace App\Helpers;
  */
 class ShellOutputHelper
 {
-    public function writeToFile(string $cmd,?string $fileName=null):void  //void unless will need exit status
+    public function writeToFile(string $cmd,?string $fileName=null):int
     { //FILE NAME NULL WHILE TESTING TO SHELLTEST.TXT
+        //PI route /var/www/-$userName-/shellOutputs/-$fileName.txt-
         $descriptorspec = array(
             0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
             1 => array("file","/mnt/c/Users/Edvinas/shellOutputTest/shelltest.txt", "w"),  // stdout is a pipe that the child will write to
@@ -36,8 +37,8 @@ class ShellOutputHelper
          
              // It is important that you close any pipes before calling
              // proc_close in order to avoid a deadlock
-             proc_close($process);
-         
+            $exitCode = proc_close($process);
+            return $exitCode;
             //  echo "command returned $return_value\n";
     }
     }  

@@ -10,21 +10,16 @@ use Illuminate\Support\Facades\Auth;
 
 class ApplicationRepository
 {
-    public function saveWithRelation(array $data):Application
+    public function saveWithRelation(array $data):void
     {   
-        $user = Auth::user();
-        $userDB = User::find($user->id);
-        $application=$userDB->applications()->create($data);
-
-dd($application);
-
-
+        $user = auth()->user();
         
         if($user instanceof User){
-            $application->user()->sync($user->id);
+            $application=$user->applications()->create($data);
         }
-        return $application;
     }
+
+    
     public function saveWithRelationAdmin(array $data):Application
     {
         $user = Auth::user();

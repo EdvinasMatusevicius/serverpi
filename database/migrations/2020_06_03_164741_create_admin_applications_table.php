@@ -16,7 +16,7 @@ class CreateAdminApplicationsTable extends Migration
         Schema::create('admin_applications', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('admin_id');
-            $table->string('applicationName');
+            $table->string('applicationName')->unique();
             $table->timestamps();
         });
 

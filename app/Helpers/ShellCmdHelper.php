@@ -11,7 +11,9 @@ namespace App\Helpers;
  */
 class ShellCmdHelper
 {
-private $wwwRoute = 'cd /var/www';
+// private $wwwRoute = 'cd /var/www';
+private $wwwRoute = 'cd /mnt/c/Users/Edvinas/shellOutputTest'; //just for testing
+
 
  public function gitPull(string $userFolder,string $projectFolder): string
  {

@@ -11,9 +11,9 @@ class ApplicationStoreRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,19 @@ class ApplicationStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'applicationName'=>'required|string|regex:/^[a-zA-Z0-9]+$/|unique:applications|unique:admin_applications|min:3|max:60',
+            'giturl'=>'required|min:23|url'
         ];
+
     }
+    public function getData(): array
+    {
+        $data = [
+            'applicationName' => $this->input('applicationName'),
+            'giturl' => $this->input('giturl'),
+        ];
+
+        return $data;
+    }
+
 }
