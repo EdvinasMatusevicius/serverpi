@@ -64,8 +64,9 @@ private $wwwRoute = 'cd /mnt/c/Users/Edvinas/shellOutputTest'; //just for testin
 
  public function dumpAutoload(string $userFolder,string $projectFolder):string
  {
-     return $this->wwwRoute.'/'.$userFolder.'/'.$projectFolder.' && php artisan migrate 2>&1';
+     return $this->wwwRoute.'/'.$userFolder.'/'.$projectFolder.' && php artisan dump-autoload 2>&1';
  }
+ //need to implement
  public function dbSeed(string $userFolder,string $projectFolder,?string $seedClass = null):string
  {
      if($seedClass && preg_match('/^[a-zA-Z0-9]+$/',$seedClass)){
@@ -76,7 +77,7 @@ private $wwwRoute = 'cd /mnt/c/Users/Edvinas/shellOutputTest'; //just for testin
      }
      return '';
  }
-
+ //need to implement
  public function customArtisan(string $userFolder,string $projectFolder,string $command):string
  {
      if(!preg_match('/[&|;]+/', $command)){
