@@ -30,16 +30,17 @@ Route::middleware('auth:web')->group(function(){
         Route::post('/new-application', 'ApplicationController@create')->name('newApplicationCreate');
 
         Route::namespace('Panel')->group(function(){
-            Route::get('/{project}/panel', 'PanelController@index')->name('panel');
+            Route::middleware('checkOwner')->get('/{project}/panel', 'PanelController@index')->name('panel');
             
+            //-----------------------------------------------------------------------------------------------------
             $shellRoutes = ['git_pull','composer_install','app_key_generate','app_storage_link','db_migrate','dump_autoload','db_seed',
         'custom_artisan']; 
             $projects = ['serverpi'];  //get all projects, add  permitions to user which he can access
+            // -----------------------------------------------------------------------------------------------------
             
-            
-            Route::get('/{project}/shell','ShellController@showShell')->name('showShell');
+            Route::middleware('checkOwner')->get('/{project}/shell','ShellController@showShell')->name('showShell');
             foreach ($shellRoutes as $route) {
-                Route::match(['get','post'],'/{project}/shell/'.$route,'ShellController@'.$route)->name($route . $projects[0]);
+                Route::middleware('checkOwner')->match(['get','post'],'/{project}/shell/'.$route,'ShellController@'.$route)->name($route . $projects[0]);
             }
         });
     });

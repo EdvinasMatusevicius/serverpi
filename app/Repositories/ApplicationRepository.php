@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Admin;
+use App\AdminApplication;
 use App\Application;
 use App\User;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -30,8 +31,18 @@ class ApplicationRepository
         }
         return $application;
     }
-    public function projectBelongsToUser(){
+    public function applicationBelongsToUser($project){
         $user = Auth::user();
+        $userApp = false;
+        if($user instanceof User){
+            $userApp = Application::query()->where('user_id','=',$user->id)
+            ->where('slug','=',$project)->exists();
+        }else if($user instanceof Admin){
+            $userApp = AdminApplication::query()->where('admin_id','=',$user->id)
+            ->where('slug','=',$project)->exists();
+        }
+        return $userApp;
+
         //PABAIGTI VALIDACIJA AR USERIS GALI LEISTI COMANDAS ANT KONKRETAUS PROJEKTO
     }
 }
