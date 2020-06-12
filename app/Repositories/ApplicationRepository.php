@@ -15,7 +15,7 @@ class ApplicationRepository
         $user = auth()->user();
         
         if($user instanceof User){
-            $application=$user->applications()->create($data);
+            $user->applications()->create($data);
         }
     }
 
@@ -30,5 +30,8 @@ class ApplicationRepository
         }
         return $application;
     }
-
+    public function projectBelongsToUser(){
+        $user = Auth::user();
+        //PABAIGTI VALIDACIJA AR USERIS GALI LEISTI COMANDAS ANT KONKRETAUS PROJEKTO
+    }
 }

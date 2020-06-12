@@ -12,6 +12,15 @@
             {{ $message }}
         </div>
     @enderror
+<br>
+    <label for="newApplicationSlug">Enter app slug (alphabetic lowercase and numeric symbols only)</label>
+    <input type="text" class="newApplicationForm__slug" name='applicationSlug' id="newApplicationSlug" value="{{old('applicationSlug' ?? '')}}">
+    @error('applicationSlug')
+        <div class="alert-danger">
+            {{ $message }}
+        </div>
+    @enderror
+    <br>
     <label for="giturl">Enter your project's clone with HTTPS link from github</label>
 <input type="text" class="newApplicationForm__giturl" name="giturl" id="giturl" value="{{old('giturl' ?? '')}}">
 @error('giturl')
@@ -19,6 +28,19 @@
     {{$message}}
 </div>
 @enderror
+<br>
+<select name="language" id="#">
+    <option value="1">PHP / LARAVEL</option>
+    <option value="2">NODE</option>
+    <option value="3">STATIC</option>
+
+</select>
+@error('language')
+<div class="alert-danger">
+    {{$message}}
+</div>
+@enderror
+
     <input type="submit" value="submit">
 </form>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Application\Panel;
 use App\Facades\ShellCmdBuilder;
 use App\Facades\ShellOutput;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Shell\CustomArtisanRunRequest;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -21,30 +22,58 @@ class ShellController extends Controller
         ]);
     }
 
-    public function gitPull(Request $request){
+    public function git_pull(Request $request){
         return $this->tryCatchBlock($request->project,'gitPull');
         
     }
-    public function composerInstall(Request $request){
+    public function composer_install(Request $request){
         return $this->tryCatchBlock($request->project,'composerInstall');
 
     }
-    public function appKeyGenerate(Request $request){
+    public function app_key_generate(Request $request){
         return $this->tryCatchBlock($request->project,'appKeyGenerate');
 
     }
-    public function appStorageLink(Request $request){
+    public function app_storage_link(Request $request){
         return $this->tryCatchBlock($request->project,'appStorageLink');
 
     }
-    public function dbMigrate(Request $request){
+    public function db_migrate(Request $request){
         return $this->tryCatchBlock($request->project,'dbMigrate');
 
     }
-    public function dumpAutoload(Request $request){
+    public function dump_autoload(Request $request){
         return $this->tryCatchBlock($request->project,'dumpAutoload');
 
     }
+    public function db_seed(Request $request){
+        try {
+            $user=auth()->user();
+            $cmd = ShellCmdBuilder::dbSeed($user->name,$request->project,$request->seedClass);
+            // $cmd = ShellCmdBuilder::dbSeed($request->project,'');//for now uses serverpi whitch is not in user folder\
+            dd($cmd);
+            $stream = ShellOutput::writeToFile($cmd);
+           if($stream === 0){
+            return redirect()->route('showShell',['project'=>$request->project])->with('status','database seeding finished');
+        }
+        throw new Exception('error accured');
+        } catch (Exception $exception) {
+            return redirect()->route('showShell',['project'=>$request->project])->with('danger','something went wrong '.$exception->getMessage());
+        }
+    }
+    public function custom_artisan(CustomArtisanRunRequest $request){
+        dd('DUUUDEEE');
+        try {
+
+            dd($request);
+            return view('welcome');
+        } catch (Exception $exception) {
+            back()->with('danger',$exception->getMessage());
+        }
+    }
+
+
+    
   private function tryCatchBlock (string $project,string $command){
         $cmdNameArr = [
             'gitPull'=>'git command finished ',

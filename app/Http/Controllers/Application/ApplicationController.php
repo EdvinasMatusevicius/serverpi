@@ -9,6 +9,7 @@ use App\Http\Requests\ApplicationStoreRequest;
 use App\Repositories\ApplicationRepository;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\View\View;
 
 class ApplicationController extends Controller
@@ -31,12 +32,16 @@ class ApplicationController extends Controller
        $data = $request->getData();
        //create unique file and give to write file
        $cmd = ShellCmdBuilder::gitClone($user->name,$data['applicationName'],$data['giturl']);
-       $stream = ShellOutput::writeToFile($cmd);
+    //    $stream = ShellOutput::writeToFile($cmd);
 
-        if($stream ===0){
-            $output = $this->applicationRepository->saveWithRelation($request->only('applicationName'));
-            return redirect()->route('panel',['project'=>$request->applicationName])->with('status','Your project cloned successfully '.$output);
-       }
+        // if($stream ===0){
+            $fieldsArr =['applicationName','slug','language'];
+            if(isset($data['database'])){
+                array_push($fieldsArr,'database');
+            };
+            $output = $this->applicationRepository->saveWithRelation(Arr::only($data,$fieldsArr));
+            return redirect()->route('panel',['project'=>$data['slug']])->with('status','Your project cloned successfully '.$output);
+    //    }
        return back()->with('danger','Error accured')->withInput();
 
     } catch (Exception $exception) {

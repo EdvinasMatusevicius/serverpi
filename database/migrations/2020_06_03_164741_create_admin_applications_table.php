@@ -17,6 +17,9 @@ class CreateAdminApplicationsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('admin_id');
             $table->string('applicationName')->unique();
+            $table->string('slug')->unique();
+            $table->integer('language')->require();
+            $table->string('database')->nullable();
             $table->timestamps();
         });
 

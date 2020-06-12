@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Facade;
 /**
 *@method static string gitPull(string $userFolder,string $projectFolder)
 *@method static string gitClone(string $userFolder,string $projectFolder,string $url)
+*@method static string userFolder(string $userName,?string $deleteFolder =null)
+*@method static string shOutputFolder(string $userName)
 *@method static string composerInstall(string $userFolder,string $projectFolder)
 *@method static string dbCreate(string $dbName)
 *@method static string appKeyGenerate(string $userFolder,string $projectFolder)

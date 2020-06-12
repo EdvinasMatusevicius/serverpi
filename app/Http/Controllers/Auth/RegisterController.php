@@ -52,8 +52,8 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'regex:/^[a-zA-Z0-9]+$/', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'name' => ['required', 'unique:users','unique:admins', 'regex:/^[a-zA-Z0-9]+$/', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users','unique:admins'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -66,12 +66,16 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-       $cmd = ShellCmdBuilder::folder($data['name']);
-        shell_exec($cmd);
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        $cmd = ShellCmdBuilder::userFolder($data['name']);
+        $cmd2 = ShellCmdBuilder::shOutputFolder($data['name']);
+        shell_exec($cmd . ' && '.$cmd2);
+        
+        return $user;
     }
 }

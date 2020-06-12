@@ -8,7 +8,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class AdminApplication extends Model
 {
     protected $fillable = [
-        'applicationName'
+        'applicationName',
+        'slug',
+        'language',
+        'database'
     ];
     public function admin():BelongsTo
     {

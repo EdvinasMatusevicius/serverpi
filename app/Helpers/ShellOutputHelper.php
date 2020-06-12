@@ -12,7 +12,7 @@ class ShellOutputHelper
 {
     public function writeToFile(string $cmd,?string $fileName=null):int
     { //FILE NAME NULL WHILE TESTING TO SHELLTEST.TXT
-        //PI route /var/www/-$userName-/shellOutputs/-$fileName.txt-
+        //PI route /var/www/-$userName-/sh/-$fileName.txt-
         $descriptorspec = array(
             0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
             1 => array("file","/mnt/c/Users/Edvinas/shellOutputTest/shelltest.txt", "w"),  // stdout is a pipe that the child will write to

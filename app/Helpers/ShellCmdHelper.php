@@ -25,7 +25,7 @@ private $wwwRoute = 'cd /mnt/c/Users/Edvinas/shellOutputTest'; //just for testin
     return $this->wwwRoute.'/'.$userFolder.' && git clone '.$url.' '.$projectFolder.' 2>&1';
  }
 
- public function folder(string $userName,?string $deleteFolder =null): string
+ public function userFolder(string $userName,?string $deleteFolder =null): string
  {
     if($deleteFolder === null){
         return $this->wwwRoute.' && mkdir '.$userName;
@@ -33,7 +33,10 @@ private $wwwRoute = 'cd /mnt/c/Users/Edvinas/shellOutputTest'; //just for testin
         return $this->wwwRoute.'/'.$userName.' && rm -r '.$deleteFolder;
     }
  }
-
+ public function shOutputFolder(string $userName): string
+ {
+        return $this->wwwRoute.'/'.$userName.' && mkdir sh';
+ }
  public function composerInstall(string $userFolder,string $projectFolder): string
  {
     return $this->wwwRoute.'/'.$userFolder.'/'.$projectFolder.' && composer install 2>&1';

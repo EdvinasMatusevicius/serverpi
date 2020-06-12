@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Admin;
+use App\Facades\ShellCmdBuilder;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Validator;
 
@@ -49,7 +50,10 @@ class AdminCreate extends Command
             'password'=>$password
         ];
         Admin::query()->create($data);
-        
+
+        $cmd = ShellCmdBuilder::userFolder($data['name']);
+        $cmd2 = ShellCmdBuilder::shOutputFolder($data['name']);
+        shell_exec($cmd . ' && '.$cmd2);
     }
 
 
@@ -57,7 +61,7 @@ class AdminCreate extends Command
     {
         $name = $this->ask('Enter admin name');
         $validator = Validator::make(['name'=>$name],[
-            'name'=>'required|regex:/^[a-zA-Z0-9]+$/|max:60'
+            'name'=>'required|unique:users|unique:admins|regex:/^[a-zA-Z0-9]+$/|max:60'
         ]);
         if($validator->fails()){
             $this->error('name must be min 1 symbol, max 60 symbols and must be comprised of alpabetic characters or numbers');
