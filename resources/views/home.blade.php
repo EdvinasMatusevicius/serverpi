@@ -19,7 +19,9 @@
                     @if (Route::has('panel'))
                     {{-- per loopa isprintint esamus projektus su project var --}}
                     <div class="links">
-                        <a href="{{route('panel',['project'=>'serverpi'])}}">Project Control panel</a>
+                        <a href="{{route('panel',['project'=>'serverpi'])}}">Serverpi Control panel</a><br>
+                        <a href="{{ route('panel', ['project' => 'alot-of-spaces'])}}">alot-ofspaces control panel</a>
+
                     </div><br>
                     <div class="links">
                         <a href="{{route('newApplication')}}">Add new project</a>

@@ -8,11 +8,10 @@ use Illuminate\View\View;
 
 class PanelController extends Controller
 {
-    public function index(): View
-    {
-        $projektas = 'serverpi';                     /////<--dinamiskai gauti produkto name
+    public function index(Request $request): View
+    {                     /////<--dinamiskai gauti produkto name
         return view('panel.controlPanel',[
-            'project'=> $projektas
+            'project'=> $request->project
         ]);
     }
 

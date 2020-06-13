@@ -13,12 +13,10 @@ use Illuminate\View\View;
 class ShellController extends Controller
 {
  
-    public function showShell(): View
+    public function showShell(Request $request): View
     {
-        $projektas = 'serverpi';
         return view('panel.shellCommandsSection',[
-            'project'=> $projektas
-
+            'project'=> $request->project
         ]);
     }
 
@@ -51,7 +49,6 @@ class ShellController extends Controller
             $user=auth()->user();
             $cmd = ShellCmdBuilder::dbSeed($user->name,$request->project,$request->seedClass);
             // $cmd = ShellCmdBuilder::dbSeed($request->project,'');//for now uses serverpi whitch is not in user folder\
-            dd($cmd);
             $stream = ShellOutput::writeToFile($cmd);
            if($stream === 0){
             return redirect()->route('showShell',['project'=>$request->project])->with('status','database seeding finished');
@@ -62,13 +59,17 @@ class ShellController extends Controller
         }
     }
     public function custom_artisan(CustomArtisanRunRequest $request){
-        dd('DUUUDEEE');
-        try {
 
-            dd($request);
-            return view('welcome');
+        try {
+            $user=auth()->user();
+            $cmd = ShellCmdBuilder::customArtisan($user->name,$request->project,$request->artisanCmd);
+            $stream = ShellOutput::writeToFile($cmd);
+            if($stream === 0){
+                return redirect()->route('showShell',['project'=>$request->project])->with('status','artisan command finished');
+            }
+            throw new Exception('error '.$stream.' accured');
         } catch (Exception $exception) {
-            back()->with('danger',$exception->getMessage());
+            return redirect()->route('showShell',['project'=>$request->project])->with('danger','something went wrong '.$exception->getMessage());
         }
     }
 
@@ -86,9 +87,9 @@ class ShellController extends Controller
 
         try {
             $user=auth()->user();
-            // $cmd = ShellCmdBuilder::$command($user->name,$project);
-            $cmd = ShellCmdBuilder::$command($project,'');//for now uses serverpi whitch is not in user folder\
-            dd($cmd,$cmdNameArr[$command]);
+            $cmd = ShellCmdBuilder::$command($user->name,$project);
+            // $cmd = ShellCmdBuilder::$command($project,'');//for now uses serverpi whitch is not in user folder\
+            // dd($cmd,$cmdNameArr[$command]);
             $stream = ShellOutput::writeToFile($cmd);
            if($stream === 0){
             return redirect()->route('showShell',['project'=>$project])->with('status',$cmdNameArr[$command]);

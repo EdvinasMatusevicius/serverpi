@@ -3,7 +3,7 @@
 @section('content')
 
 <a href='/'>Home</a><br>
-<a href="{{ route('showShell', ['project' => 'serverpi'])}}">shell comands</a>
+<a href="{{ route('showShell', ['project' => $project])}}">shell comands</a>
 
 
 @endsection

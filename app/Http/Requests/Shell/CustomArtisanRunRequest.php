@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Shell;
 
+use App\Repositories\ApplicationRepository;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
@@ -25,8 +26,8 @@ class CustomArtisanRunRequest extends FormRequest
     public function rules()
     {
         return [
-            'artisanCmd'=> 'required',
-            'project'=>'required|string'
+            'artisanCmd'=> ['required','string','not_regex:/[&|;]+/'],
+            'project'=>['required','string'],
         ];
     }
     public function all($keys = null)
@@ -36,7 +37,6 @@ class CustomArtisanRunRequest extends FormRequest
         return $data;
     }
 
-    //IF MIDDLEWARE WORKS DELETE THIS
     /*
     *
     * @param  \Illuminate\Validation\Validator  $validator
@@ -46,9 +46,9 @@ class CustomArtisanRunRequest extends FormRequest
     {
         $validator->after(function ($validator) {
 
-            //! AR GALIMAS PRIEJIMAS PRIE PROJEKTO DABARTINIAM USERIUJ
-                if (null) {
-                $validator->errors()->add('field', 'Something is wrong with this field!');
+            $repository = new ApplicationRepository;
+            if (!$repository->applicationBelongsToUser($this->project)) {
+                $validator->errors()->add('inaccessible project', 'Something is wrong with project\'s url field!');
             }
         });
     }

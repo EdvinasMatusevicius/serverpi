@@ -26,7 +26,7 @@ class ApplicationStoreRequest extends FormRequest
     {
         return [
             'applicationName'=>'required|string|regex:/(?! )^([a-z0-9 ])+(?<! )$/|unique:applications|unique:admin_applications|min:3|max:60',
-            'applicationSlug'=>'nullable|string|regex:/(?!-)^([a-z0-9-])+(?<!-)$/|unique:applications|unique:admin_applications|min:3|max:60',
+            'applicationSlug'=>'nullable|string|regex:/(?!-)^([a-z0-9-])+(?<!-)$/|unique:applications,slug|unique:admin_applications,slug|min:3|max:60',
             'giturl'=>'required|min:23|url',
             'language'=>'required|integer|max:3',
             'database'=>'sometimes|regex:/(?!-)^([a-z0-9-])+(?<!-)$/|max:60'
@@ -50,7 +50,7 @@ class ApplicationStoreRequest extends FormRequest
     }
     protected function getSlug():string
     {
-        $slug = $this->input('slug');
+        $slug = $this->input('applicationSlug');
 
         if ($slug == null) {
             $slug = $this->input('applicationName');
