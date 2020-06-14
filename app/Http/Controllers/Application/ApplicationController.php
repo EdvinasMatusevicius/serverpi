@@ -17,6 +17,8 @@ class ApplicationController extends Controller
     private $applicationRepository;
     public function __construct(ApplicationRepository $applicationRepository)
     {
+        // $this->middleware('auth');
+
         $this->applicationRepository=$applicationRepository;
     }
 

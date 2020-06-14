@@ -31,6 +31,16 @@ class ApplicationRepository
         }
         return $application;
     }
+    public function userApplicationsList():array
+    {
+        $user = Auth::user();
+        $userApplications = $user->applications;
+        $filteredApplications = $userApplications->map(function($app){
+            return $app->only(['applicationName','slug']);
+        });
+        return $filteredApplications->toArray();
+
+    }
     public function applicationBelongsToUser($project){
         $user = Auth::user();
         $userApp = false;

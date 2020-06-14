@@ -16,14 +16,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     // return view('welcome');
-    return redirect()->route('home');
+    return view('welcome');
 });
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
 
 Route::middleware('auth:web')->group(function(){
+    Route::get('/home', 'HomeController@index')->name('home');
 
     Route::namespace('Application')->group(function(){
         Route::get('/new-application', 'ApplicationController@index')->name('newApplication');

@@ -16,17 +16,22 @@
                     @endif
 
                     You are logged in!
-                    @if (Route::has('panel'))
                     {{-- per loopa isprintint esamus projektus su project var --}}
-                    <div class="links">
-                        <a href="{{route('panel',['project'=>'serverpi'])}}">Serverpi Control panel</a><br>
-                        <a href="{{ route('panel', ['project' => 'alot-of-spaces'])}}">alot-ofspaces control panel</a>
+                    {{-- @isset($list) --}}
+                        <div class="links">
+                            @foreach ($list as $application)
+                            
+                            
+                                <a href="{{route('panel',['project'=>$application['slug']])}}">{{$application['applicationName']}} Control panel</a><br>
 
-                    </div><br>
+                            @endforeach
+                        </div><br>
+                    {{-- @endisset --}}
+                    @if (Route::has('newApplication'))
                     <div class="links">
                         <a href="{{route('newApplication')}}">Add new project</a>
                     </div>
-                @endif
+                    @endif
                 </div>
             </div>
         </div>
