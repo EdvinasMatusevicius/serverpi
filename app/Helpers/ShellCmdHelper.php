@@ -41,7 +41,27 @@ private $wwwRoute = 'cd /mnt/c/Users/Edvinas/shellOutputTest'; //just for testin
  {
     return $this->wwwRoute.'/"'.$userFolder.'"/"'.$projectFolder.'" && composer install 2>&1';
  }
-
+ public function npmInstall(string $userFolder,string $projectFolder): string
+ {
+    return $this->wwwRoute.'/"'.$userFolder.'"/"'.$projectFolder.'" && npm install 2>&1';
+ }
+ //TO DO: yarn
+ public function copyEnvExample(string $userFolder,string $projectFolder): string
+ {
+    return $this->wwwRoute.'/"'.$userFolder.'"/"'.$projectFolder.'" && cp .env.example .env 2>&1';
+ }
+ public function createEnvFile(string $userFolder,string $projectFolder): string
+ {
+    return $this->wwwRoute.'/"'.$userFolder.'"/"'.$projectFolder.'" && cp .env.example .env 2>&1';
+ }
+ public function getEnvFileValues(string $userFolder,string $projectFolder): string
+ {
+    return $this->wwwRoute.'/"'.$userFolder.'"/"'.$projectFolder.'" && cat .env 2>&1';
+ }
+ public function writeToEnvFile(string $userFolder,string $projectFolder,string $values): string
+ {
+    return $this->wwwRoute.'/"'.$userFolder.'"/"'.$projectFolder.'" && printf "'.$values.'" > .env 2>&1';
+ }
  public function dbCreate(string $dbName):string
  {
     //  return 'mysql -upi -ptest -e "create database cmdTest1"';
