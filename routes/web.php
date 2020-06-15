@@ -34,7 +34,7 @@ Route::middleware('auth:web')->group(function(){
             
             //-----------------------------------------------------------------------------------------------------
             $shellRoutes = ['git_pull','composer_install','app_key_generate','app_storage_link','db_migrate','dump_autoload','db_seed',
-        'custom_artisan']; 
+        'custom_artisan','get_env_values','copy_env_example','write_to_env_file']; 
             // -----------------------------------------------------------------------------------------------------
             
             Route::middleware('checkOwner')->get('/{project}/shell','ShellController@showShell')->name('showShell');

@@ -28,6 +28,32 @@ class ShellController extends Controller
         return $this->tryCatchBlock($request->project,'composerInstall');
 
     }
+    public function npm_install(Request $request){
+        return $this->tryCatchBlock($request->project,'npmInstall');
+
+    }
+    public function copy_env_example(Request $request){
+        return $this->tryCatchBlock($request->project,'copyEnvExample');
+
+    }
+    public function create_env_file(Request $request){
+        return $this->tryCatchBlock($request->project,'createEnvFile');
+
+    }
+    public function get_env_values(Request $request){
+    try{
+        $user=auth()->user();
+        $cmd = ShellCmdBuilder::getEnvFileValues($user->name,$request->project);
+        $values = shell_exec($cmd);
+        return view('Panel/shellCommandsSection',['project'=>$request->project,'valuess'=>$values]);
+    } catch (Exception $exception) {
+        return redirect()->route('home',['project'=>$request->project])->with('danger','something went wrong '.$exception->getMessage());
+    }
+    }
+    public function write_to_env_file(Request $request){
+        return $this->tryCatchBlock($request->project,'writeToEnvFile',$request->envVars);
+
+    }
     public function app_key_generate(Request $request){
         return $this->tryCatchBlock($request->project,'appKeyGenerate');
 
@@ -45,49 +71,35 @@ class ShellController extends Controller
 
     }
     public function db_seed(Request $request){
-        try {
-            $user=auth()->user();
-            $cmd = ShellCmdBuilder::dbSeed($user->name,$request->project,$request->seedClass);
-            // $cmd = ShellCmdBuilder::dbSeed($request->project,'');//for now uses serverpi whitch is not in user folder\
-            $stream = ShellOutput::writeToFile($cmd);
-           if($stream === 0){
-            return redirect()->route('showShell',['project'=>$request->project])->with('status','database seeding finished');
-        }
-        throw new Exception('error accured');
-        } catch (Exception $exception) {
-            return redirect()->route('showShell',['project'=>$request->project])->with('danger','something went wrong '.$exception->getMessage());
-        }
+        return $this->tryCatchBlock($request->project,'dbSeed',$request->seedClass);
+
     }
     public function custom_artisan(CustomArtisanRunRequest $request){
+        return $this->tryCatchBlock($request->project,'customArtisan',$request->artisanCmd);
 
-        try {
-            $user=auth()->user();
-            $cmd = ShellCmdBuilder::customArtisan($user->name,$request->project,$request->artisanCmd);
-            $stream = ShellOutput::writeToFile($cmd);
-            if($stream === 0){
-                return redirect()->route('showShell',['project'=>$request->project])->with('status','artisan command finished');
-            }
-            throw new Exception('error '.$stream.' accured');
-        } catch (Exception $exception) {
-            return redirect()->route('showShell',['project'=>$request->project])->with('danger','something went wrong '.$exception->getMessage());
-        }
     }
 
 
     
-  private function tryCatchBlock (string $project,string $command){
+  private function tryCatchBlock (string $project,string $command,?string $dynamicCmdValAfterCdRoute =null){
         $cmdNameArr = [
             'gitPull'=>'git command finished ',
             'composerInstall'=>'composer install command finished',
+            'npmInstall'=>'npm install command finished',
+            'copyEnvExample'=>'.env.example copied with .env name',
+            'createEnvFile'=>'.empty .env file created',
+            'writeToEnvFile'=>'values saved to .env file',
             'appKeyGenerate'=>'app key generated',
             'appStorageLink'=>'storage linked',
             'dbMigrate'=>'database finished migrating',
             'dumpAutoload'=>'composer dump-autoload command finished',
+            'dbSeed'=>'database seed comand finished',
+            'customArtisan'=>'artisan comand finished',
         ];
 
         try {
             $user=auth()->user();
-            $cmd = ShellCmdBuilder::$command($user->name,$project);
+            $cmd = ShellCmdBuilder::$command($user->name,$project,$dynamicCmdValAfterCdRoute);
             // $cmd = ShellCmdBuilder::$command($project,'');//for now uses serverpi whitch is not in user folder\
             // dd($cmd,$cmdNameArr[$command]);
             $stream = ShellOutput::writeToFile($cmd);
