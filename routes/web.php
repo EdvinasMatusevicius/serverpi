@@ -29,7 +29,7 @@ Route::middleware('auth:web')->group(function(){
         Route::get('/new-application', 'ApplicationController@index')->name('newApplication');
         Route::post('/new-application', 'ApplicationController@create')->name('newApplicationCreate');
 
-        Route::namespace('panel')->group(function(){
+        Route::namespace('Panel')->group(function(){
             Route::middleware('checkOwner')->get('/{project}/panel', 'PanelController@index')->name('panel');
             Route::middleware('checkOwner')->post('/{project}/shell', 'ShellController@showShell')->name('showShell');
 
