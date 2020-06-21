@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Application\Panel;
 
+use App\Facades\NginxConfigBuilder;
 use App\Facades\ShellCmdBuilder;
 use App\Facades\ShellOutput;
 use App\Http\Controllers\Controller;
@@ -78,6 +79,20 @@ class ShellController extends Controller
         return $this->tryCatchBlock($request->project,'customArtisan',$request->artisanCmd);
 
     }
+    public function nginx_config(Request $request){
+        try {
+            $user=auth()->user();
+            //from db check which language
+            $cmd =  NginxConfigBuilder::phpApplicationCmd($user,$request->project,$request->path);
+            $stream = ShellOutput::writeToFile($cmd,$user->name,);
+            if($stream === 0){
+             return redirect()->route('showShell',['project'=>$project])->with('status','sukure configa nginx');
+         }
+        } catch (Exception $exception) {
+            return redirect()->route('showShell',['project'=>$project])->with('danger','something went wrong '.$exception->getMessage());
+
+        }
+    }
 
 
     
@@ -100,9 +115,7 @@ class ShellController extends Controller
         try {
             $user=auth()->user();
             $cmd = ShellCmdBuilder::$command($user->name,$project,$dynamicCmdValAfterCdRoute);
-            // $cmd = ShellCmdBuilder::$command($project,'');//for now uses serverpi whitch is not in user folder\
-            // dd($cmd,$cmdNameArr[$command]);
-            $stream = ShellOutput::writeToFile($cmd);
+            $stream = ShellOutput::writeToFile($cmd,$user->name,);
            if($stream === 0){
             return redirect()->route('showShell',['project'=>$project])->with('status',$cmdNameArr[$command]);
         }
