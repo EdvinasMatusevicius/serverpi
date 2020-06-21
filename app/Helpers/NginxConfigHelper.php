@@ -46,7 +46,6 @@ class NginxConfigHelper
                
                         # PHP-FPM Configuration Nginx
                         location ~ \.php$ {
-                                try_files \$uri =404;
                                 fastcgi_split_path_info ^(.+\.php)(/.+)$;
                                 fastcgi_pass unix:/run/php/php7.3-fpm.sock;
                                 fastcgi_index index.php;
@@ -59,7 +58,7 @@ class NginxConfigHelper
         }
 
         private function nginxConfigCreateAndLinkCmd($configData,$project){
-                return "cd /etc/nginx/sites-available && printf \"{$configData}\" > {$project}.conf && ln -s /etc/nginx/sites-available/{$project}.conf /etc/nginx/sites-enabled/";
+                return "cd /etc/nginx/sites-available && printf '{$configData}' > {$project}.conf && ln -s /etc/nginx/sites-available/{$project}.conf /etc/nginx/sites-enabled/";
         }
 
 }
