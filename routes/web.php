@@ -31,7 +31,7 @@ Route::middleware('auth:web')->group(function(){
 
         Route::namespace('Panel')->group(function(){
             Route::middleware('checkOwner')->get('/{project}/panel', 'PanelController@index')->name('panel');
-            Route::middleware('checkOwner')->post('/{project}/shell', 'ShellController@showShell')->name('showShell');
+            Route::middleware('checkOwner')->get('/{project}/shell', 'ShellController@showShell')->name('showShell');
 
             //----------------------------------------------------------------------------------------------------- SHELL
             $shellRoutes = ['git_pull','composer_install','app_key_generate','app_storage_link','db_migrate','dump_autoload','db_seed',
