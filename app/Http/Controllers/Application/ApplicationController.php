@@ -34,7 +34,7 @@ class ApplicationController extends Controller
        $data = $request->getData();
        //create unique file and give to write file
        $cmd = ShellCmdBuilder::gitClone($user->name,$data['slug'],$data['giturl']);
-       $stream = ShellOutput::writeToFile($cmd);
+       $stream = ShellOutput::writeToFile($cmd,$user->name);
 
         if($stream ===0){
             $fieldsArr =['applicationName','slug','language'];

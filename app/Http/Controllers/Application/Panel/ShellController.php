@@ -86,10 +86,10 @@ class ShellController extends Controller
             $cmd =  NginxConfigBuilder::phpApplicationCmd($user,$request->project,$request->path);
             $stream = ShellOutput::writeToFile($cmd,$user->name,);
             if($stream === 0){
-             return redirect()->route('showShell',['project'=>$project])->with('status','sukure configa nginx');
+             return redirect()->route('showShell',['project'=>$request->project])->with('status','sukure configa nginx');
          }
         } catch (Exception $exception) {
-            return redirect()->route('showShell',['project'=>$project])->with('danger','something went wrong '.$exception->getMessage());
+            return redirect()->route('showShell',['project'=>$request->project])->with('danger','something went wrong '.$exception->getMessage());
 
         }
     }
