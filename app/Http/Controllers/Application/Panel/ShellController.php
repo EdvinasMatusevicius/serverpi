@@ -83,7 +83,7 @@ class ShellController extends Controller
         try {
             $user=auth()->user();
             //from db check which language
-            $cmd =  NginxConfigBuilder::phpApplicationCmd($user,$request->project,$request->path);
+            $cmd =  NginxConfigBuilder::phpApplicationCmd($user->name,$request->project,$request->path);
             $stream = ShellOutput::writeToFile($cmd,$user->name,);
             if($stream === 0){
              return redirect()->route('showShell',['project'=>$request->project])->with('status','sukure configa nginx');
