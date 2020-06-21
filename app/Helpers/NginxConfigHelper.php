@@ -14,7 +14,7 @@ class NginxConfigHelper
         public function staticApplicationCmd(string $user,string $project, string $rootCustom){
                 $data = "server {
                         listen: 80;
-                        server_name {$project}.serverpi.com;;
+                        server_name {$project}.ddns.net;
                         access_log /var/www/{$user}/{$project}/{$project}.log;
                         error_log /var/www/{$user}/{$project}/{$project}.log;
                     
@@ -25,8 +25,7 @@ class NginxConfigHelper
 
         public function phpApplicationCmd($user,$project,$rootCustom){
                 $data = "server {
-                        listen 80 ;
-                        listen [::]:80 ipv6only=on;
+                        listen 80 default server;
                
                         # Log files for Debugging
                         access_log /var/www/{$user}/{$project}/{$project}.log;
@@ -37,7 +36,7 @@ class NginxConfigHelper
                         index index.php index.html index.htm;
                
                         # Your Domain Name
-                        server_name {$project}.serverpi.com;
+                        server_name {$project}.ddns.net;
                
                         location / {
                                 try_files \$uri \$uri/ /index.php\$is_args\$args;
