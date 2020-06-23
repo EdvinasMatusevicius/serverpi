@@ -11,10 +11,13 @@ namespace App\Helpers;
  */
 class ShellCmdHelper
 {
-private $wwwRoute = 'cd /var/www';
-// private $wwwRoute = 'cd /mnt/c/Users/Edvinas/shellOutputTest'; //just for testing
+// private $wwwRoute = 'cd /var/www';
+private $wwwRoute = 'cd /mnt/c/Users/Edvinas/shellOutputTest'; //just for testing
 private function routeToProject(string $userFolder,string $projectFolder){
     return $this->wwwRoute.'/"'.$userFolder.'"/"'.$projectFolder;
+}
+private function connectToDb(){
+    return 'mysql -u'.env('DB_USERNAME','root').' -p'.env('DB_PASSWORD','');
 }
 
  public function gitPull(string $userFolder,string $projectFolder): string
@@ -64,11 +67,15 @@ private function routeToProject(string $userFolder,string $projectFolder){
  {
     return $this->routeToProject($userFolder,$projectFolder).'" && printf "'.$values.'" > .env 2>&1';
  }
- public function dbCreate(string $dbName):string
+ public function dbAndUserCreate(string $userName, string $dbName, string $password){
+    return $this->connectToDb().'-e "create database '.$dbName.'; CREATE USER \''.$userName.'\'@\'localhost\' IDENTIFIED BY \''.$password.'\'; GRANT ALL ON '.$dbName.'.* TO \''.$userName.'\'@\'localhost\';"';
+ }
+ public function dbAndPrivilegeCreate(string $userName,string $dbName):string
  {
-    //  return 'mysql -upi -ptest -e "create database cmdTest1"';
-    return 'mysql -u'.env('DB_USERNAME','root').' -p'.env('DB_PASSWORD','').' -e "create database '.$dbName.'"';
-
+    return $this->connectToDb().'-e "create database '.$dbName.'; GRANT ALL ON '.$dbName.'.* TO \''.$userName.'\'@\'localhost\';"';
+ }
+ public function dbCustomQuery(string $userName, string $dbName, string $password,string $customQuery){
+    return 'mysql -u'.$userName.' -p'.$password.' -e "USE '.$dbName.';'.$customQuery;
  }
 
  public function appKeyGenerate(string $userFolder,string $projectFolder):string

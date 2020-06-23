@@ -22,7 +22,8 @@ class Admin extends Authenticatable
         'remember_token',
     ];
     protected $casts = [
-        'email_verified_at' => 'datetime'
+        'email_verified_at' => 'datetime',
+        'has_db_user'=>'boolean',
     ];
     public function applications(): HasMany
     {

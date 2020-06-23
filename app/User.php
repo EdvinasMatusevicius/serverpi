@@ -36,6 +36,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'has_db_user'=>'boolean',
     ];
     public function applications(): HasMany
     {

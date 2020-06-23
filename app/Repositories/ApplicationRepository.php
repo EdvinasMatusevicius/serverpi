@@ -41,18 +41,27 @@ class ApplicationRepository
         return $filteredApplications->toArray();
 
     }
-    public function applicationBelongsToUser($project){
+    public function applicationBelongsToUser($application){
         $user = Auth::user();
         $userApp = false;
         if($user instanceof User){
             $userApp = Application::query()->where('user_id','=',$user->id)
-            ->where('slug','=',$project)->exists();
+            ->where('slug','=',$application)->exists();
         }else if($user instanceof Admin){
             $userApp = AdminApplication::query()->where('admin_id','=',$user->id)
-            ->where('slug','=',$project)->exists();
+            ->where('slug','=',$application)->exists();
         }
         return $userApp;
-
-        //PABAIGTI VALIDACIJA AR USERIS GALI LEISTI COMANDAS ANT KONKRETAUS PROJEKTO
+    }
+    public function applicationHasDatabase($application){
+        $userApp = Application::where('slug','=',$application)->value('database');
+        $adminsApp = AdminApplication::where('slug','=',$application)->value('database');
+        if($userApp){
+            return $userApp;
+        } elseif($adminsApp){
+            return $adminsApp;
+        }else{
+            return false;
+        }
     }
 }

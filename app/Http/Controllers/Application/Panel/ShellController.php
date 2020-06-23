@@ -7,12 +7,19 @@ use App\Facades\ShellCmdBuilder;
 use App\Facades\ShellOutput;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Shell\CustomArtisanRunRequest;
+use App\Repositories\UserRepository;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ShellController extends Controller
 {
+    private $userRepository;
+
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
  
     public function showShell(Request $request): View
     {
@@ -63,6 +70,17 @@ class ShellController extends Controller
         return $this->tryCatchBlock($request->project,'appStorageLink');
 
     }
+    public function db_and_user_create(Request $request){
+        return $this->tryCatchBlockDb($request->project,'dbAndUserCreate',$request->password);
+        dd($this->userRepository->userHasRepositoryUser());
+        // dd($this->userRepository->userHasRepositoryUser());
+    }
+    public function db_and_privilege_create(Request $request){
+        return $this->tryCatchBlockDb($request->project,'dbAndPrivilegeCreate',$request->password);
+    }
+    public function db_custom_query(Request $request){
+        return $this->tryCatchBlockDb($request->project,'dbAndPrivilegeCreate',$request->password,$request->customquery);
+    }
     public function db_migrate(Request $request){
         return $this->tryCatchBlock($request->project,'dbMigrate');
 
@@ -94,7 +112,25 @@ class ShellController extends Controller
         }
     }
 
+    private function tryCatchBlockDb (string $project,string $command,string $password,?string $customQuery =null){
+        $cmdNameArr = [
+            'dbAndUserCreate'=>'db and user initiated',
+            'dbCustomQuery'=>'########',
+        ];
 
+        try {
+            $user=auth()->user();
+            $cmd = ShellCmdBuilder::$command($user->name,$project,$password,$customQuery);
+            dd($cmd);
+            // $stream = ShellOutput::writeToFile($cmd,$user->name,);
+        //    if($stream === 0){
+        //     return redirect()->route('showShell',['project'=>$project])->with('status',$cmdNameArr[$command]);
+        // }
+        throw new Exception('error accured');
+        } catch (Exception $exception) {
+            return redirect()->route('showShell',['project'=>$project])->with('danger','something went wrong '.$exception->getMessage());
+        }
+  }
     
   private function tryCatchBlock (string $project,string $command,?string $dynamicCmdValAfterCdRoute =null){
         $cmdNameArr = [

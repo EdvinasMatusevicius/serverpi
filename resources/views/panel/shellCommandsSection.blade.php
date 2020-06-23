@@ -41,4 +41,10 @@
     <input type="text" name='path'>
 
 </form>
+<form action="{{ route('db_create', ['project' => $project]) }}" method="post">
+    @csrf
+    <input type="submit" value="create database and user">
+    <input type="password" name='password'>
+
+</form>
 @endsection
