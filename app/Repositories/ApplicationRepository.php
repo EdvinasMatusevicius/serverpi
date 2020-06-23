@@ -53,9 +53,18 @@ class ApplicationRepository
         }
         return $userApp;
     }
-    public function applicationHasDatabase($application){
-        $userApp = Application::where('slug','=',$application)->value('database');
-        $adminsApp = AdminApplication::where('slug','=',$application)->value('database');
+    public function applicationSlugExists($slug){
+        $userApp = Application::where('slug','=',$slug)->exists();
+        $adminsApp = AdminApplication::where('slug','=',$slug)->exists();
+        if($userApp || $adminsApp){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public function applicationHasDatabase($slug){
+        $userApp = Application::where('slug','=',$slug)->value('database');
+        $adminsApp = AdminApplication::where('slug','=',$slug)->value('database');
         if($userApp){
             return $userApp;
         } elseif($adminsApp){

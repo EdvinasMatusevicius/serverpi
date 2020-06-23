@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Repositories\ApplicationRepository;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Validator;
 
 class ApplicationStoreRequest extends FormRequest
 {
@@ -58,5 +60,14 @@ class ApplicationStoreRequest extends FormRequest
 
         return Str::slug($slug);
     }
+    public function withValidator(Validator $validator)
+    {
+        $validator->after(function ($validator) {
 
+            $repository = new ApplicationRepository;
+            if (!$repository->applicationSlugExists($this->getSlug())) {
+                $validator->errors()->add('applicationSlug', 'slug exists');
+            }
+        });
+    }
 }
