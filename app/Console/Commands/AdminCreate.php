@@ -47,13 +47,13 @@ class AdminCreate extends Command
         $data = [
             'name'=>$name,
             'email'=>$email,
-            'password'=>$password
+            'password'=>bcrypt($password), 
         ];
         Admin::query()->create($data);
 
-        $cmd = ShellCmdBuilder::userFolder($data['name']);
-        $cmd2 = ShellCmdBuilder::shOutputFolder($data['name']);
-        shell_exec($cmd . ' && '.$cmd2);
+        // $cmd = ShellCmdBuilder::userFolder($data['name']);
+        // $cmd2 = ShellCmdBuilder::shOutputFolder($data['name']);
+        // shell_exec($cmd . ' && '.$cmd2);
     }
 
 

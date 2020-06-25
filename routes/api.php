@@ -19,7 +19,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::namespace('API\Auth')->prefix('auth')->group(function (){
-    Route::post('register', 'AuthenticationController@register');
-    Route::post('login', 'AuthenticationController@login');
-    // Route::post('logout', 'AuthenticationController@logout');
+    
+    Route::middleware('guest:api')->group(function (){
+        Route::post('register', 'AuthenticationController@register');
+        Route::post('login', 'AuthenticationController@login');
+        Route::get('users', function () {
+            return ['api'=>'route'];
+        });
+    });
+
+
+    Route::middleware('auth:api')->group(function (){
+        Route::post('logout', 'AuthenticationController@logout');
+
+    });
 });

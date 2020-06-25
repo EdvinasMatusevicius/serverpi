@@ -62,20 +62,20 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\User
+     * @return \App\Admin
      */
-    // protected function create(array $data)
-    // {
-    //     $user = Admin::create([
-    //         'name' => $data['name'],
-    //         'email' => $data['email'],
-    //         'password' => Hash::make($data['password']),
-    //     ]);
+    protected function create(array $data)
+    {
+        $user = Admin::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
 
-    //     $cmd = ShellCmdBuilder::userFolder($data['name']);
-    //     $cmd2 = ShellCmdBuilder::shOutputFolder($data['name']);
-    //     shell_exec($cmd . ' && '.$cmd2);
+        // $cmd = ShellCmdBuilder::userFolder($data['name']);
+        // $cmd2 = ShellCmdBuilder::shOutputFolder($data['name']);
+        // shell_exec($cmd . ' && '.$cmd2);
         
-    //     return $user;
-    // }
+        return $user;
+    }
 }

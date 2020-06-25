@@ -9,6 +9,11 @@ use App\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use App\Http\Responses\ApiResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Lcobucci\JWT\Parser;
 
 class AuthenticationController extends Controller
 {
@@ -37,14 +42,21 @@ class AuthenticationController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         try {
-            // dd(auth()->attempt($request->getCredentials())); //visalaika grazina false nors ir gauna gera prisijungimo info
-            if (!auth()->attempt($request->getCredentials())) {   
-                return (new ApiResponse())->unauthorized('Invalid credentials.');
+            $credentials = $request->getCredentials();
+            $password = $credentials['password'];
+            $email = $credentials['email'];
+
+            $user = User::where('email', '=', $email)->first();
+            if (!$user) {
+                return (new ApiResponse())->unauthorized('Invalid email');
+            }
+            if (!Hash::check($password, $user->password)) {
+                return (new ApiResponse())->unauthorized('Invalid password');
+
             }
 
-            /** @var User $customer */
-            $customer = auth()->user();
-            $token = $customer->createToken('Grant Client')->accessToken;
+            /** @var User $user */
+            $token = $user->createToken('Grant Client')->accessToken;
 
             return (new ApiResponse())->success([
                 'token' => $token,
@@ -54,5 +66,25 @@ class AuthenticationController extends Controller
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
         }
+    }
+    public function logout(Request $request)
+    {
+        try {
+            
+       
+        $value = $request->bearerToken();
+        $tokenId = (new Parser())->parse($value)->getClaim('jti');
+
+        /** @var User $user */
+        $user = auth('api')->user();
+        /** @var Token $token */
+        $token = $user->tokens->find($tokenId);
+        $token->revoke();
+
+        return new Response('', JsonResponse::HTTP_NO_CONTENT);
+
+    } catch (Exception $exception) {
+        return (new ApiResponse())->exception($exception->getMessage());
+    }
     }
 }

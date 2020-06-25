@@ -35,7 +35,7 @@ class RegisterRequest extends LoginRequest
     {
         return [
             'name' => $this->getUserName(),
-            'email' => $this->getEmail(),
+            'email' => $this->getUserEmail(),
             'password' => $this->getUserPassword(),
         ];
     }

@@ -15,6 +15,7 @@ class HomeController extends Controller
      */
     public function __construct(ApplicationRepository $applicationRepository)
     {
+        $this->middleware('auth');
         $this->applicationRepository=$applicationRepository;
     }
 
