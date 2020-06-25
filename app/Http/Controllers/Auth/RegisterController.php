@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Admin;
 use App\Facades\ShellCmdBuilder;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -64,18 +64,18 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function create(array $data)
-    {
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+    // protected function create(array $data)
+    // {
+    //     $user = Admin::create([
+    //         'name' => $data['name'],
+    //         'email' => $data['email'],
+    //         'password' => Hash::make($data['password']),
+    //     ]);
 
-        $cmd = ShellCmdBuilder::userFolder($data['name']);
-        $cmd2 = ShellCmdBuilder::shOutputFolder($data['name']);
-        shell_exec($cmd . ' && '.$cmd2);
+    //     $cmd = ShellCmdBuilder::userFolder($data['name']);
+    //     $cmd2 = ShellCmdBuilder::shOutputFolder($data['name']);
+    //     shell_exec($cmd . ' && '.$cmd2);
         
-        return $user;
-    }
+    //     return $user;
+    // }
 }
