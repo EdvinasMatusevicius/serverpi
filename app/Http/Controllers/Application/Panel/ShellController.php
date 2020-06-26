@@ -7,6 +7,7 @@ use App\Facades\ShellCmdBuilder;
 use App\Facades\ShellOutput;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Shell\CustomArtisanRunRequest;
+use App\Repositories\ApplicationRepository;
 use App\Repositories\UserRepository;
 use Exception;
 use Illuminate\Http\Request;
@@ -15,14 +16,17 @@ use Illuminate\View\View;
 class ShellController extends Controller
 {
     private $userRepository;
+    private $applicationRepository;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository, ApplicationRepository $applicationRepository)
     {
         $this->userRepository = $userRepository;
+        $this->applicationRepository = $applicationRepository;
     }
  
     public function showShell(Request $request): View
     {
+        //ar yra sukurta db ir db useris  pasiusti info 
         return view('panel.shellCommandsSection',[
             'project'=> $request->project
         ]);
@@ -70,16 +74,13 @@ class ShellController extends Controller
         return $this->tryCatchBlock($request->project,'appStorageLink');
 
     }
-    public function db_and_user_create(Request $request){
-        return $this->tryCatchBlockDb($request->project,'dbAndUserCreate',$request->password);
-        dd($this->userRepository->userHasRepositoryUser());
+    public function db_create(Request $request){
+        return $this->dbTryCatchBlock($request->project,'dbCreate',$request->password);
+        // dd($this->userRepository->userHasRepositoryUser());
         // dd($this->userRepository->userHasRepositoryUser());
     }
-    public function db_and_privilege_create(Request $request){
-        return $this->tryCatchBlockDb($request->project,'dbAndPrivilegeCreate',$request->password);
-    }
     public function db_custom_query(Request $request){
-        return $this->tryCatchBlockDb($request->project,'dbAndPrivilegeCreate',$request->password,$request->customquery);
+        return $this->dbTryCatchBlock($request->project,'dbAndPrivilegeCreate',$request->password,$request->customquery);
     }
     public function db_migrate(Request $request){
         return $this->tryCatchBlock($request->project,'dbMigrate');
@@ -112,18 +113,30 @@ class ShellController extends Controller
         }
     }
 
-    private function tryCatchBlockDb (string $project,string $command,string $password,?string $customQuery =null){
+    private function dbTryCatchBlock (string $project,string $command,string $password,?string $customQuery =null){
         $cmdNameArr = [
-            'dbAndUserCreate'=>'db and user initiated',
-            'dbCustomQuery'=>'########',
+            'dbAndUserCreate'=>'databbase and user created',
+            'dbAndPrivilegeCreate'=> 'databbase created',
+            'dbCustomQuery'=>'database command executed',
         ];
+        if($command === 'dbCreate' && $this->userRepository->userHasRepositoryUser())
+            { $command = 'dbAndPrivilegeCreate';
+        }else if($command === 'dbCreate'){
+            $command = 'dbAndUserCreate';
+        }
 
         try {
             $user=auth()->user();
             $cmd = ShellCmdBuilder::$command($user->name,$project,$password,$customQuery);
             dd($cmd);
+
             // $stream = ShellOutput::writeToFile($cmd,$user->name,);
-        //    if($stream === 0){
+
+        //    if($stream === 0){ 
+                    if($command === 'updateRepositoryUser'){
+                        $this->userRepository->updateRepositoryUser();//TEST IN RASPBERY IF DB SHELL COMMANDS WORK
+                    }
+                    $this->applicationRepository->applicationAddDatabase($project);
         //     return redirect()->route('showShell',['project'=>$project])->with('status',$cmdNameArr[$command]);
         // }
         throw new Exception('error accured');

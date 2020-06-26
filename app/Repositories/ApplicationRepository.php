@@ -11,26 +11,13 @@ use Illuminate\Support\Facades\Auth;
 
 class ApplicationRepository
 {
-    public function saveWithRelation(array $data):void
+    public function saveWithRelation(array $data)
     {   
         $user = auth()->user();
         
-        if($user instanceof User){
-            $user->applications()->create($data);
-        }
+        return $user->applications()->create($data);
     }
 
-    
-    public function saveWithRelationAdmin(array $data):Application
-    {
-        $user = Auth::user();
-        $application = Application::query()->create($data);
-
-        if($user instanceof Admin){
-            $application->admin()->sync($user);
-        }
-        return $application;
-    }
     public function userApplicationsList():array
     {
         $user = Auth::user();
@@ -63,14 +50,25 @@ class ApplicationRepository
         }
     }
     public function applicationHasDatabase($slug){
-        $userApp = Application::where('slug','=',$slug)->value('database');
-        $adminsApp = AdminApplication::where('slug','=',$slug)->value('database');
-        if($userApp){
-            return $userApp;
-        } elseif($adminsApp){
-            return $adminsApp;
+        $applicationClass = $this->applicationClass();
+        $app = $applicationClass::where('slug','=',$slug)->value('database');
+        if($app){
+            return $app;
         }else{
             return false;
+        }
+    }
+    public function applicationAddDatabase($slug){
+        $applicationClass = $this->applicationClass();
+        $dbName = str_replace("-","_",$slug);
+        $applicationClass::where('slug','=',$slug)->update(['database'=>$dbName]);;
+    }
+    private function applicationClass($user = NULL){
+        $user = $user ?? auth()->user();
+        if($user instanceof User){
+            return new Application;
+        }else if($user instanceof Admin){
+            return new AdminApplication;
         }
     }
 }

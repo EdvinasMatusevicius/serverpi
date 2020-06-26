@@ -65,7 +65,7 @@ class ApplicationStoreRequest extends FormRequest
         $validator->after(function ($validator) {
 
             $repository = new ApplicationRepository;
-            if (!$repository->applicationSlugExists($this->getSlug())) {
+            if ($repository->applicationSlugExists($this->getSlug())) {
                 $validator->errors()->add('applicationSlug', 'slug exists');
             }
         });

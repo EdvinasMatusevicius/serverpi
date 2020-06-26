@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Application extends Model
 {
     protected $fillable = [
+        'user_id',
         'applicationName',
         'slug',
         'language',
         'database'
     ];
-    public function user():BelongsTo
+    public function owner():BelongsTo
     {
         return $this->belongsTo(User::class);
     }
