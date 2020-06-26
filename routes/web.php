@@ -19,7 +19,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Auth::routes(); //add except for at the moment unecesery routes   delete/update etc
 
 
 Route::middleware('auth:web')->group(function(){

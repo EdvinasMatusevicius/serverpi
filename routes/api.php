@@ -17,15 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
 Route::namespace('API\Auth')->prefix('auth')->group(function (){
     
     Route::middleware('guest:api')->group(function (){
         Route::post('register', 'AuthenticationController@register');
         Route::post('login', 'AuthenticationController@login');
-        Route::get('users', function () {
-            return ['api'=>'route'];
-        });
     });
 
 
@@ -34,3 +30,30 @@ Route::namespace('API\Auth')->prefix('auth')->group(function (){
 
     });
 });
+
+Route::namespace('API')->middleware('auth:api')->group(function (){
+    
+    Route::namespace('Application')->group(function(){
+        Route::get('/new-application', 'ApplicationController@index')->name('newApplication');
+        Route::post('/new-application', 'ApplicationController@create')->name('newApplicationCreate');
+
+        Route::namespace('Panel')->group(function(){
+            Route::middleware('checkOwner')->get('/{project}/panel', 'PanelController@index')->name('panel');
+            Route::middleware('checkOwner')->get('/{project}/shell', 'ShellController@showShell')->name('showShell');
+
+            //----------------------------------------------------------------------------------------------------- SHELL
+            $shellRoutes = ['git_pull'
+        //     ,'composer_install','app_key_generate','app_storage_link','db_migrate','dump_autoload','db_seed',
+        // 'custom_artisan','get_env_values','copy_env_example','create_env_file','write_to_env_file','npm_install','app_key_generate'
+        // ,'nginx_config','db_and_user_create','db_and_privilege_create','db_custom_query'
+    ]; 
+            // -----------------------------------------------------------------------------------------------------
+            
+                foreach ($shellRoutes as $route) {
+                    Route::middleware('checkOwner')->match(['get','post'],'/{project}/shell/'.$route,'ShellController@'.$route)->name($route);
+                }
+        });
+    });
+
+});
+
