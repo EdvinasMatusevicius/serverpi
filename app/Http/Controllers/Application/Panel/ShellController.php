@@ -78,12 +78,12 @@ class ShellController extends Controller
     }
     public function db_create(DatabaseCreateRequest $request){
 
-        return $this->dbTryCatchBlock($request->getDataBaseName(),'dbCreate',$request->password);
+        return $this->dbTryCatchBlock($request->project,'dbCreate',$request->password);
         // dd($this->userRepository->userHasRepositoryUser());
         // dd($this->userRepository->userHasRepositoryUser());
     }
     public function db_custom_query(DatabaseCustomQueryRequest $request){
-        return $this->dbTryCatchBlock($request->getDataBaseName(),'dbAndPrivilegeCreate',$request->password,$request->customquery);
+        return $this->dbTryCatchBlock($request->project,'dbAndPrivilegeCreate',$request->password,$request->customquery);
     }
     public function db_migrate(Request $request){
         return $this->tryCatchBlock($request->project,'dbMigrate');
