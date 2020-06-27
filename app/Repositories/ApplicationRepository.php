@@ -61,7 +61,7 @@ class ApplicationRepository
     public function applicationAddDatabase($slug){
         $applicationClass = $this->applicationClass();
         $dbName = str_replace("-","_",$slug);
-        $applicationClass::where('slug','=',$slug)->update(['database'=>$dbName]);;
+        $applicationClass::where('slug','=',$slug)->update(['database'=>$dbName]);
     }
     private function applicationClass($user = NULL){
         $user = $user ?? auth()->user();
