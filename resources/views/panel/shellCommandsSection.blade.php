@@ -44,7 +44,15 @@
 <form action="{{ route('db_create', ['project' => $project]) }}" method="post">
     @csrf
     <input type="submit" value="create database and user">
-    <input type="password" name='password'>
+    <input type="password" name='password' placeholder="password">
+
+</form>
+<form action="{{ route('db_custom_query', ['project' => $project]) }}" method="post">
+    @csrf
+    <input type="submit" value="create database and user">
+    <input type="password" name='password'  placeholder="password">
+    <input type="text" name='customquery'  placeholder="custom database query">
+
 
 </form>
 @endsection

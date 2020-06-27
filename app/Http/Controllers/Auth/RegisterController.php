@@ -72,9 +72,9 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
-        // $cmd = ShellCmdBuilder::userFolder($data['name']);
-        // $cmd2 = ShellCmdBuilder::shOutputFolder($data['name']);
-        // shell_exec($cmd . ' && '.$cmd2);
+        $cmd = ShellCmdBuilder::userFolder($data['name']);
+        $cmd2 = ShellCmdBuilder::shOutputFolder($data['name']);
+        shell_exec($cmd . ' && '.$cmd2);
         
         return $user;
     }

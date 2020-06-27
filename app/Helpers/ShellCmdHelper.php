@@ -11,8 +11,8 @@ namespace App\Helpers;
  */
 class ShellCmdHelper
 {
-// private $wwwRoute = 'cd /var/www';
-private $wwwRoute = 'cd /mnt/c/Users/Edvinas/shellOutputTest'; //just for testing
+private $wwwRoute = 'cd /var/www';
+// private $wwwRoute = 'cd /mnt/c/Users/Edvinas/shellOutputTest'; //just for testing
 private function routeToProject(string $userFolder,string $projectFolder){
     return $this->wwwRoute.'/"'.$userFolder.'"/"'.$projectFolder;
 }
@@ -98,7 +98,6 @@ private function connectToDb(){
  {
      return $this->routeToProject($userFolder,$projectFolder).'" && php artisan dump-autoload 2>&1';
  }
- //need to implement
  public function dbSeed(string $userFolder,string $projectFolder,?string $seedClass = null):string
  {
      if($seedClass && preg_match('/^[a-zA-Z0-9]+$/',$seedClass)){

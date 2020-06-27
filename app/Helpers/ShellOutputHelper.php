@@ -15,10 +15,10 @@ class ShellOutputHelper
         //PI route /var/www/-$userName-/sh/-$fileName.txt-
         $descriptorspec = array(
             0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
-            // 1 => array("file","/var/www/{$fileName}/sh/shell.txt", "w"),  // stdout is a pipe that the child will write to
-            // 2 => array("file", "/var/www/{$fileName}/sh/shellerrors.txt", "w") // stderr is a file to write to
-            1 => array("file","/mnt/c/Users/Edvinas/shellOutputTest/shelltest.txt", "w"),  // stdout is a pipe that the child will write to
-            2 => array("file", "/mnt/c/Users/Edvinas/shellOutputTest/shellerrors.txt", "w") // stderr is a file to write to
+            1 => array("file","/var/www/{$fileName}/sh/shell.txt", "w"),  // stdout is a pipe that the child will write to
+            2 => array("file", "/var/www/{$fileName}/sh/shellerrors.txt", "w") // stderr is a file to write to
+            // 1 => array("file","/mnt/c/Users/Edvinas/shellOutputTest/shelltest.txt", "w"),  // stdout is a pipe that the child will write to
+            // 2 => array("file", "/mnt/c/Users/Edvinas/shellOutputTest/shellerrors.txt", "w") // stderr is a file to write to
          );
          
          $cwd = base_path();

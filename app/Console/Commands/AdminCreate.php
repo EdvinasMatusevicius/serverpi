@@ -51,9 +51,9 @@ class AdminCreate extends Command
         ];
         Admin::query()->create($data);
 
-        // $cmd = ShellCmdBuilder::userFolder($data['name']);
-        // $cmd2 = ShellCmdBuilder::shOutputFolder($data['name']);
-        // shell_exec($cmd . ' && '.$cmd2);
+        $cmd = ShellCmdBuilder::userFolder($data['name']);
+        $cmd2 = ShellCmdBuilder::shOutputFolder($data['name']);
+        shell_exec($cmd . ' && '.$cmd2);
     }
 
 

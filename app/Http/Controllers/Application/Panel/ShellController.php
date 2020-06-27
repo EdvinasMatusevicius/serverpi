@@ -130,15 +130,15 @@ class ShellController extends Controller
             $cmd = ShellCmdBuilder::$command($user->name,$project,$password,$customQuery);
             dd($cmd);
 
-            // $stream = ShellOutput::writeToFile($cmd,$user->name,);
+            $stream = ShellOutput::writeToFile($cmd,$user->name,);
 
-        //    if($stream === 0){ 
+           if($stream === 0){ 
                     if($command === 'updateRepositoryUser'){
                         $this->userRepository->updateRepositoryUser();//TEST IN RASPBERY IF DB SHELL COMMANDS WORK
                     }
                     $this->applicationRepository->applicationAddDatabase($project);
-        //     return redirect()->route('showShell',['project'=>$project])->with('status',$cmdNameArr[$command]);
-        // }
+            return redirect()->route('showShell',['project'=>$project])->with('status',$cmdNameArr[$command]);
+        }
         throw new Exception('error accured');
         } catch (Exception $exception) {
             return redirect()->route('showShell',['project'=>$project])->with('danger','something went wrong '.$exception->getMessage());

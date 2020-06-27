@@ -33,17 +33,17 @@ class ApplicationController extends Controller
        $user=auth()->user();
        $data = $request->getData();
        //create unique file and give to write file
-    //    $cmd = ShellCmdBuilder::gitClone($user->name,$data['slug'],$data['giturl']);
-    //    $stream = ShellOutput::writeToFile($cmd,$user->name);
+       $cmd = ShellCmdBuilder::gitClone($user->name,$data['slug'],$data['giturl']);
+       $stream = ShellOutput::writeToFile($cmd,$user->name);
 
-        // if($stream ===0){
+        if($stream ===0){
             $fieldsArr =['applicationName','slug','language'];
             if(isset($data['database'])){
                 array_push($fieldsArr,'database');
             };
             $application = $this->applicationRepository->saveWithRelation(Arr::only($data,$fieldsArr));
             return redirect()->route('panel',['project'=>$data['slug']])->with('status',$application->applicationName .' project cloned successfully ');
-    //    }
+       }
        return back()->with('danger','Error accured')->withInput();
 
     } catch (Exception $exception) {
