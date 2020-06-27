@@ -34,8 +34,4 @@ class DatabaseCreateRequest extends FormRequest
         $data['project'] = $this->route('project');
         return $data;
     }
-    public function getDataBaseName():string
-    {
-        return  str_replace("-","_",$this->project);
-    }
 }

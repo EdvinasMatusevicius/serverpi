@@ -16,7 +16,7 @@ class UserRepository
         /**
          * @var Authenticatable $user 
          */
-        $user->update(['has_db_user'=>true]);
+        $user->update(['has_db_user'=>1]);
     }
     
 }

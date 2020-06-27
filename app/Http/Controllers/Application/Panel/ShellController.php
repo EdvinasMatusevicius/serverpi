@@ -122,6 +122,7 @@ class ShellController extends Controller
             'dbAndPrivilegeCreate'=> 'databbase created',
             'dbCustomQuery'=>'database command executed',
         ];
+        $databaseName = str_replace("-","_",$project);
         if($command === 'dbCreate' && $this->userRepository->userHasRepositoryUser())
             { $command = 'dbAndPrivilegeCreate';
         }else if($command === 'dbCreate'){
@@ -130,7 +131,7 @@ class ShellController extends Controller
 
         try {
             $user=auth()->user();
-            $cmd = ShellCmdBuilder::$command($user->name,$project,$password,$customQuery);
+            $cmd = ShellCmdBuilder::$command($user->name,$databaseName,$password,$customQuery);
             // dd($cmd);
 
             $stream = ShellOutput::writeToFile($cmd,$user->name,);
