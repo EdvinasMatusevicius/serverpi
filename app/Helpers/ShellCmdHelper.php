@@ -68,11 +68,11 @@ private function connectToDb(){
     return $this->routeToProject($userFolder,$projectFolder).'" && printf "'.$values.'" > .env 2>&1';
  }
  public function dbAndUserCreate(string $userName, string $dbName, string $password){
-    return $this->connectToDb().'-e "create database '.$dbName.'; CREATE USER \''.$userName.'\'@\'localhost\' IDENTIFIED BY \''.$password.'\'; GRANT ALL ON '.$dbName.'.* TO \''.$userName.'\'@\'localhost\';"';
+    return $this->connectToDb().' -e "create database '.$dbName.'; CREATE USER \''.$userName.'\'@\'localhost\' IDENTIFIED BY \''.$password.'\'; GRANT ALL ON '.$dbName.'.* TO \''.$userName.'\'@\'localhost\';"';
  }
  public function dbAndPrivilegeCreate(string $userName,string $dbName):string
  {
-    return $this->connectToDb().'-e "create database '.$dbName.'; GRANT ALL ON '.$dbName.'.* TO \''.$userName.'\'@\'localhost\';"';
+    return $this->connectToDb().' -e "create database '.$dbName.'; GRANT ALL ON '.$dbName.'.* TO \''.$userName.'\'@\'localhost\';"';
  }
  public function dbCustomQuery(string $userName, string $dbName, string $password,string $customQuery){
     return 'mysql -u'.$userName.' -p'.$password.' -e "USE '.$dbName.';'.$customQuery;
