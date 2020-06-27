@@ -7,6 +7,8 @@ use App\Facades\ShellCmdBuilder;
 use App\Facades\ShellOutput;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Shell\CustomArtisanRunRequest;
+use App\Http\Requests\Shell\DatabaseCreateRequest;
+use App\Http\Requests\Shell\DatabaseCustomQueryRequest;
 use App\Repositories\ApplicationRepository;
 use App\Repositories\UserRepository;
 use Exception;
@@ -74,13 +76,14 @@ class ShellController extends Controller
         return $this->tryCatchBlock($request->project,'appStorageLink');
 
     }
-    public function db_create(Request $request){
-        return $this->dbTryCatchBlock($request->project,'dbCreate',$request->password);
+    public function db_create(DatabaseCreateRequest $request){
+
+        return $this->dbTryCatchBlock($request->getDataBaseName(),'dbCreate',$request->password);
         // dd($this->userRepository->userHasRepositoryUser());
         // dd($this->userRepository->userHasRepositoryUser());
     }
-    public function db_custom_query(Request $request){
-        return $this->dbTryCatchBlock($request->project,'dbAndPrivilegeCreate',$request->password,$request->customquery);
+    public function db_custom_query(DatabaseCustomQueryRequest $request){
+        return $this->dbTryCatchBlock($request->getDataBaseName(),'dbAndPrivilegeCreate',$request->password,$request->customquery);
     }
     public function db_migrate(Request $request){
         return $this->tryCatchBlock($request->project,'dbMigrate');

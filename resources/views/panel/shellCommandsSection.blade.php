@@ -45,7 +45,10 @@
     @csrf
     <input type="submit" value="create database and user">
     <input type="password" name='password' placeholder="password">
-
+    @error('password') 
+    {{-- vienu metu tures but tik vienas psw jei nera sukurtos db, db_create jei yra db_custom_query --}}
+        {{$message}}
+    @enderror
 </form>
 <form action="{{ route('db_custom_query', ['project' => $project]) }}" method="post">
     @csrf
