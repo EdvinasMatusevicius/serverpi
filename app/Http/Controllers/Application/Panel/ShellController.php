@@ -137,7 +137,7 @@ class ShellController extends Controller
             $stream = ShellOutput::writeToFile($cmd,$user->name,);
 
            if($stream === 0){ 
-                    if($command === 'updateRepositoryUser'){
+                    if($command === 'dbAndUserCreate'){
                         $this->userRepository->updateRepositoryUser();//TEST IN RASPBERY IF DB SHELL COMMANDS WORK
                     }
                     $this->applicationRepository->applicationAddDatabase($project);
