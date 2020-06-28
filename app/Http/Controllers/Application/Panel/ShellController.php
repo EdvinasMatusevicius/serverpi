@@ -122,6 +122,7 @@ class ShellController extends Controller
             'dbAndPrivilegeCreate'=> 'databbase created',
             'dbCustomQuery'=>'database command executed',
         ];
+        
         $databaseName = str_replace("-","_",$project);
         if($command === 'dbCreate' && $this->userRepository->userHasRepositoryUser())
             { $command = 'dbAndPrivilegeCreate';
@@ -139,7 +140,9 @@ class ShellController extends Controller
                     if($command === 'dbAndUserCreate'){
                         $this->userRepository->updateRepositoryUser();//TEST IN RASPBERY IF DB SHELL COMMANDS WORK
                     }
-                    $this->applicationRepository->applicationAddDatabase($project);
+                    if($command === 'dbAndUserCreate' || $command === 'dbAndPrivilegeCreate') {
+                        $this->applicationRepository->applicationAddDatabase($project);
+                    }
             return redirect()->route('showShell',['project'=>$project])->with('status',$cmdNameArr[$command]);
         }
         throw new Exception('error accured');
