@@ -83,7 +83,7 @@ class ShellController extends Controller
         // dd($this->userRepository->userHasRepositoryUser());
     }
     public function db_custom_query(DatabaseCustomQueryRequest $request){
-        return $this->dbTryCatchBlock($request->project,'dbAndPrivilegeCreate',$request->password,$request->customquery);
+        return $this->dbTryCatchBlock($request->project,'dbCustomQuery',$request->password,$request->customquery);
     }
     public function db_migrate(Request $request){
         return $this->tryCatchBlock($request->project,'dbMigrate');
@@ -122,7 +122,6 @@ class ShellController extends Controller
             'dbAndPrivilegeCreate'=> 'databbase created',
             'dbCustomQuery'=>'database command executed',
         ];
-        
         $databaseName = str_replace("-","_",$project);
         if($command === 'dbCreate' && $this->userRepository->userHasRepositoryUser())
             { $command = 'dbAndPrivilegeCreate';
