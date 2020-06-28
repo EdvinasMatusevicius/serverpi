@@ -132,7 +132,7 @@ class ShellController extends Controller
         try {
             $user=auth()->user();
             $cmd = ShellCmdBuilder::$command($user->name,$databaseName,$password,$customQuery);
-
+            dd($cmd);
             $stream = ShellOutput::writeToFile($cmd,$user->name,);
 
            if($stream === 0){ 

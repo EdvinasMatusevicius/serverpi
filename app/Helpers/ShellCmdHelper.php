@@ -75,7 +75,7 @@ private function connectToDb(){
     return $this->connectToDb().' -e "create database '.$dbName.'; GRANT ALL ON '.$dbName.'.* TO \''.$userName.'\'@\'localhost\';"';
  }
  public function dbCustomQuery(string $userName, string $dbName, string $password,string $customQuery){
-    return 'mysql -u'.$userName.' -p'.$password.' -e "USE '.$dbName.'; '.$customQuery;
+    return 'mysql -u'.$userName.' -p'.$password.' -e "USE '.$dbName.'; '.$customQuery.'"';
  }
 
  public function appKeyGenerate(string $userFolder,string $projectFolder):string
