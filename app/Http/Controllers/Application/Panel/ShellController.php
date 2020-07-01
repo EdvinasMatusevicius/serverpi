@@ -79,8 +79,6 @@ class ShellController extends Controller
     public function db_create(DatabaseCreateRequest $request){
 
         return $this->dbTryCatchBlock($request->project,'dbCreate',$request->password);
-        // dd($this->userRepository->userHasRepositoryUser());
-        // dd($this->userRepository->userHasRepositoryUser());
     }
     public function db_custom_query(DatabaseCustomQueryRequest $request){
         return $this->dbTryCatchBlock($request->project,'dbCustomQuery',$request->password,$request->customquery);
