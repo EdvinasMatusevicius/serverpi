@@ -82,6 +82,10 @@ private function connectToDb(){
  {
      return $this->routeToProject($userFolder,$projectFolder).'" && php artisan key:generate 2>&1';
  }
+ public function configCashe(string $userFolder,string $projectFolder):string
+ {
+     return $this->routeToProject($userFolder,$projectFolder).'" && php artisan config:cache 2>&1';
+ }
  
  public function appStorageLink(string $userFolder,string $projectFolder):string
  {

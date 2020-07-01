@@ -8,6 +8,7 @@
 <a href="{{ route('create_env_file', ['project' => $project]) }}">create empty .env file</a><br>
 <a href="{{ route('get_env_values', ['project' => $project]) }}">get env values</a><br>
 <a href="{{ route('app_key_generate', ['project' => $project]) }}">generate app's key</a><br>
+<a href="{{ route('config_cache', ['project' => $project]) }}">clear configuration cache</a><br>
 <a href="{{ route('app_storage_link', ['project' => $project]) }}">link storage (FILESYSTEM_DRIVER must be set in env if not default)</a><br>
 <a href="{{ route('git_pull', ['project' => $project]) }}">Pull {{$project}} git </a><br>
 <a href="{{ route('dump_autoload', ['project' => $project]) }}">Run artisan dump autoload </a><br>

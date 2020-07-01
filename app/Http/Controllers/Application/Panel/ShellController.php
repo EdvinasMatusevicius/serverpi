@@ -71,6 +71,10 @@ class ShellController extends Controller
     public function app_key_generate(Request $request){
         return $this->tryCatchBlock($request->project,'appKeyGenerate');
 
+    }    
+    public function config_cache(Request $request){
+        return $this->tryCatchBlock($request->project,'configCashe');
+
     }
     public function app_storage_link(Request $request){
         return $this->tryCatchBlock($request->project,'appStorageLink');
@@ -161,11 +165,14 @@ class ShellController extends Controller
             'dumpAutoload'=>'composer dump-autoload command finished',
             'dbSeed'=>'database seed comand finished',
             'customArtisan'=>'artisan comand finished',
+            'configCashe'=>'Configuration cached successfully!'
         ];
 
         try {
             $user=auth()->user();
             $cmd = ShellCmdBuilder::$command($user->name,$project,$dynamicCmdValAfterCdRoute);
+            dd($cmd);
+
             $stream = ShellOutput::writeToFile($cmd,$user->name,);
            if($stream === 0){
             return redirect()->route('showShell',['project'=>$project])->with('status',$cmdNameArr[$command]);
