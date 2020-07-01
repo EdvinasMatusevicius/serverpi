@@ -36,7 +36,7 @@ Route::middleware('auth:web')->group(function(){
             //----------------------------------------------------------------------------------------------------- SHELL
             $shellRoutes = ['git_pull','composer_install','app_key_generate','app_storage_link','db_migrate','dump_autoload','db_seed',
         'custom_artisan','get_env_values','copy_env_example','create_env_file','write_to_env_file','npm_install','app_key_generate'
-        ,'nginx_config','db_create','db_custom_query','config_cache']; 
+        ,'nginx_config','db_create','db_custom_query',]; 
             // -----------------------------------------------------------------------------------------------------
             
                 foreach ($shellRoutes as $route) {

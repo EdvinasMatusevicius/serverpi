@@ -20,7 +20,6 @@ use Illuminate\Support\Facades\Facade;
 *@method static string dbAndPrivilegeCreate(string $userName,string $dbName)
 *@method static string dbCustomQuery(string $userName, string $dbName, string $password,string $customQuery)
 *@method static string appKeyGenerate(string $userFolder,string $projectFolder)
-*@method static string configCashe(string $userFolder,string $projectFolder)
 *@method static string appStorageLink(string $userFolder,string $projectFolder)
 *@method static string dbMigrate(string $userFolder,string $projectFolder)
 *@method static string dumpAutoload(string $userFolder,string $projectFolder)

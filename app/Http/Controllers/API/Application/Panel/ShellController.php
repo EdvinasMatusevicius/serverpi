@@ -53,7 +53,7 @@ class ShellController extends Controller
         $user=auth()->user();
         $cmd = ShellCmdBuilder::getEnvFileValues($user->name,$request->project);
         $values = shell_exec($cmd);
-        return view('panel/shellCommandsSection',['project'=>$request->project,'valuess'=>$values]);
+        return view('panel/shellCommandsSection',['project'=>$request->project,'values'=>$values]);
     } catch (Exception $exception) {
         return redirect()->route('home',['project'=>$request->project])->with('danger','something went wrong '.$exception->getMessage());
     }

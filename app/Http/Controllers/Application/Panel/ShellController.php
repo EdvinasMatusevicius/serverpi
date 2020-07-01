@@ -55,27 +55,18 @@ class ShellController extends Controller
 
     }
     public function get_env_values(Request $request){
-    try{
-        $user=auth()->user();
-        $cmd = ShellCmdBuilder::getEnvFileValues($user->name,$request->project);
-        $values = shell_exec($cmd);
-        return view('panel/shellCommandsSection',['project'=>$request->project,'valuess'=>$values]);
-    } catch (Exception $exception) {
-        return redirect()->route('home',['project'=>$request->project])->with('danger','something went wrong '.$exception->getMessage());
-    }
+        return $this->getValueTryBlock($request->project,'getEnvFileValues','values');
     }
     public function write_to_env_file(Request $request){
         return $this->tryCatchBlock($request->project,'writeToEnvFile',$request->envVars);
 
     }
     public function app_key_generate(Request $request){
-        return $this->tryCatchBlock($request->project,'appKeyGenerate');
+        return $this->getValueTryBlock($request->project,'appKeyGenerate','appkey');
 
-    }    
-    public function config_cache(Request $request){
-        return $this->tryCatchBlock($request->project,'configCashe');
+    }  
 
-    }
+
     public function app_storage_link(Request $request){
         return $this->tryCatchBlock($request->project,'appStorageLink');
 
@@ -118,6 +109,16 @@ class ShellController extends Controller
         }
     }
 
+    private function getValueTryBlock(string $project,string $command, string $frontName){
+        try{
+            $user=auth()->user();
+            $cmd = ShellCmdBuilder::$command($user->name,$project);
+            $values = shell_exec($cmd);
+            return view('panel/shellCommandsSection',['project'=>$project,$frontName=>$values]);
+        } catch (Exception $exception) {
+            return redirect()->route('home',['project'=>$project])->with('danger','something went wrong '.$exception->getMessage());
+        }
+    }
     private function dbTryCatchBlock (string $project,string $command,string $password,?string $customQuery =null){
         $cmdNameArr = [
             'dbAndUserCreate'=>'databbase and user created',
@@ -171,7 +172,7 @@ class ShellController extends Controller
         try {
             $user=auth()->user();
             $cmd = ShellCmdBuilder::$command($user->name,$project,$dynamicCmdValAfterCdRoute);
-            dd($cmd);
+            
 
             $stream = ShellOutput::writeToFile($cmd,$user->name,);
            if($stream === 0){
