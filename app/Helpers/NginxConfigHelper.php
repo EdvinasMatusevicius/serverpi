@@ -25,7 +25,7 @@ class NginxConfigHelper
 
         public function phpApplicationCmd($user,$project,$rootCustom){
                 $data = "server {
-                        listen 80 default server;
+                        listen 80;
                
                         # Log files for Debugging
                         access_log /var/www/{$user}/{$project}/{$project}.log;

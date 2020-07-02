@@ -66,7 +66,10 @@ class ShellController extends Controller
 
     }  
 
+    public function config_cache(Request $request){
+        return $this->tryCatchBlock($request->project,'configCashe');
 
+    }
     public function app_storage_link(Request $request){
         return $this->tryCatchBlock($request->project,'appStorageLink');
 

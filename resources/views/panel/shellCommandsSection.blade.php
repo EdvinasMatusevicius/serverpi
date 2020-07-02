@@ -12,6 +12,7 @@
 <a href="{{ route('git_pull', ['project' => $project]) }}">Pull {{$project}} git </a><br>
 <a href="{{ route('dump_autoload', ['project' => $project]) }}">Run artisan dump autoload </a><br>
 <a href="{{ route('db_migrate', ['project' => $project]) }}">migrate {{$project}}'s' database </a><br>
+<a href="{{ route('config_cache', ['project' => $project]) }}">clear configuration cache</a><br>
 <a href="{{ route('db_seed', ['project' => $project]) }}">Seed {{$project}}'s' database </a><br>
 <form action="{{ route('db_seed', ['project' => $project]) }}" method="post">
     @csrf
