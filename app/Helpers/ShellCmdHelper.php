@@ -16,6 +16,9 @@ private $wwwRoute = 'cd /var/www';
 private function routeToProject(string $userFolder,string $projectFolder){
     return $this->wwwRoute.'/"'.$userFolder.'"/"'.$projectFolder;
 }
+private function routeToScripts(){
+    return $this->wwwRoute.'/dude/sh/scripts';    //MOVE SCRIPTS SYMLINK OUTSIDE OF USER FOLDER
+}
 private function connectToDb(){
     return 'mysql -u'.env('DB_USERNAME','root').' -p'.env('DB_PASSWORD','');
 }
@@ -80,11 +83,12 @@ private function connectToDb(){
 
  public function appKeyGenerate(string $userFolder,string $projectFolder):string
  {
-     return $this->routeToProject($userFolder,$projectFolder).'" && php artisan key:generate --show 2>&1';
+    //  return $this->routeToProject($userFolder,$projectFolder).'" && php artisan key:generate --show 2>&1';
+    return $this->routeToScripts().'&& bash key_generate.sh '.$userFolder .' '.$projectFolder;
  }
  public function configCashe(string $userFolder,string $projectFolder):string
  {
-     return $this->routeToProject($userFolder,$projectFolder).'" && php artisan config:cache 2>&1';
+     return $this->routeToProject($userFolder,$projectFolder).'" && php artisan config:cache && php artisan config:clear 2>&1';
  }
  
  public function appStorageLink(string $userFolder,string $projectFolder):string
@@ -95,7 +99,7 @@ private function connectToDb(){
 
  public function dbMigrate(string $userFolder,string $projectFolder):string
  {
-     return $this->routeToProject($userFolder,$projectFolder).'" && php artisan migrate 2>&1';
+     return $this->routeToScripts().'&& bash migrate.sh '.$userFolder .' '.$projectFolder;
  }
 
  public function dumpAutoload(string $userFolder,string $projectFolder):string
