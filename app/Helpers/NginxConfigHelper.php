@@ -57,7 +57,7 @@ class NginxConfigHelper
         }
 
         private function nginxConfigCreateAndLinkCmd($configData,$project){
-                return "cd /etc/nginx/sites-available && printf '{$configData}' > {$project}.conf && ln -s /etc/nginx/sites-available/{$project}.conf /etc/nginx/sites-enabled/ && sudo systemctl restart nginx";
+                return "cd /etc/nginx/sites-available && printf '{$configData}' > {$project}.conf && ln -s /etc/nginx/sites-available/{$project}.conf /etc/nginx/sites-enabled/ && sudo /usr/sbin/service nginx restart";
         }
 
 }
