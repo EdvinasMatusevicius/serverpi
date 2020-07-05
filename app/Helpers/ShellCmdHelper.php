@@ -17,7 +17,7 @@ private function routeToProject(string $userFolder,string $projectFolder){
     return $this->wwwRoute.'/"'.$userFolder.'"/"'.$projectFolder;
 }
 private function routeToScripts(){
-    return $this->wwwRoute.'/dude/sh/scripts';    //MOVE SCRIPTS SYMLINK OUTSIDE OF USER FOLDER
+    return 'cd /var/www/scripts';  
 }
 private function connectToDb(){
     return 'mysql -u'.env('DB_USERNAME','root').' -p'.env('DB_PASSWORD','');
