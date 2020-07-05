@@ -11,7 +11,7 @@ namespace App\Helpers;
  */
 class ShellCmdHelper
 {
-private $wwwRoute = 'cd /var/www';
+private $wwwRoute = 'cd /var/www/users';
 // private $wwwRoute = 'cd /mnt/c/Users/Edvinas/shellOutputTest'; //just for testing
 private function routeToProject(string $userFolder,string $projectFolder){
     return $this->wwwRoute.'/"'.$userFolder.'"/"'.$projectFolder;
