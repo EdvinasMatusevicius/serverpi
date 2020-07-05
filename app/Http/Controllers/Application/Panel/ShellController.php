@@ -62,7 +62,7 @@ class ShellController extends Controller
 
     }
     public function app_key_generate(Request $request){
-        return $this->getValueTryBlock($request->project,'appKeyGenerate','appkey');
+        return $this->tryCatchBlock($request->project,'appKeyGenerate');
 
     }  
 
@@ -112,7 +112,7 @@ class ShellController extends Controller
         }
     }
 
-    private function getValueTryBlock(string $project,string $command, string $frontName){
+    private function getValueTryBlock(string $project,string $command, string $frontName){ //front name is name of form input
         try{
             $user=auth()->user();
             $cmd = ShellCmdBuilder::$command($user->name,$project);

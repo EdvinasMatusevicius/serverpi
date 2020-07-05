@@ -15,10 +15,10 @@ class NginxConfigHelper
                 $data = "server {
                         listen: 80;
                         server_name {$project}.serverpi.ddns.me;
-                        access_log /var/www/{$user}/{$project}/{$project}.log;
-                        error_log /var/www/{$user}/{$project}/{$project}.log;
+                        access_log /var/www/users/{$user}/{$project}/{$project}.log;
+                        error_log /var/www/users/{$user}/{$project}/{$project}.log;
                     
-                        root /var/www/{$user}/{$project}{$rootCustom};
+                        root /var/www/users/{$user}/{$project}{$rootCustom};
                     }";
                     return $this->nginxConfigCreateAndLinkCmd($data,$project);
         }
@@ -28,11 +28,11 @@ class NginxConfigHelper
                         listen 80;
                
                         # Log files for Debugging
-                        access_log /var/www/{$user}/{$project}/{$project}.log;
-                        error_log /var/www/{$user}/{$project}/{$project}.log;
+                        access_log /var/www/users/{$user}/{$project}/{$project}.log;
+                        error_log /var/www/users/{$user}/{$project}/{$project}.log;
                
                         # Webroot Directory for Laravel project
-                        root /var/www/{$user}/{$project}{$rootCustom};
+                        root /var/www/users/{$user}/{$project}{$rootCustom};
                         index index.php index.html index.htm;
                
                         # Your Domain Name
