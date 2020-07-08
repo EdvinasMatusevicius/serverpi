@@ -37,7 +37,7 @@ private function connectToDb(){
  public function userFolder(string $userName,?string $deleteFolder =null): string
  {
     if($deleteFolder === null){
-        return $this->wwwUsersRoute.' && mkdir '.$userName.' && '. storage_path().'/sh && mkdir '.$userName;
+        return $this->wwwUsersRoute.' && mkdir '.$userName.' && '.$this->wwwRoute.'/sh && mkdir '.$userName;
     }else{
         return $this->wwwUsersRoute.'/'.$userName.' && rm -r '.$deleteFolder.'';
     }
