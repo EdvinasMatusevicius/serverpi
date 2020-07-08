@@ -73,8 +73,7 @@ class RegisterController extends Controller
         ]);
 
         $cmd = ShellCmdBuilder::userFolder($data['name']);
-        $cmd2 = ShellCmdBuilder::shOutputFolder($data['name']);
-        shell_exec($cmd . ' && '.$cmd2);
+        shell_exec($cmd);
         
         return $user;
     }

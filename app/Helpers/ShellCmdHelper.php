@@ -11,13 +11,14 @@ namespace App\Helpers;
  */
 class ShellCmdHelper
 {
-private $wwwRoute = 'cd /var/www/users';
-// private $wwwRoute = 'cd /mnt/c/Users/Edvinas/shellOutputTest'; //just for testing
+private $wwwUsersRoute = 'cd /var/www/users';
+private $wwwRoute = 'cd /var/www';
+// private $wwwUsersRoute = 'cd /mnt/c/Users/Edvinas/shellOutputTest'; //just for testing
 private function routeToProject(string $userFolder,string $projectFolder){
-    return $this->wwwRoute.'/"'.$userFolder.'"/"'.$projectFolder;
+    return $this->wwwUsersRoute.'/"'.$userFolder.'"/"'.$projectFolder;
 }
 private function routeToScripts(){
-    return 'cd /var/www/scripts';  
+    return 'cd '. $this->wwwRoute .'/scripts';  
 }
 private function connectToDb(){
     return 'mysql -u'.env('DB_USERNAME','root').' -p'.env('DB_PASSWORD','');
@@ -30,21 +31,18 @@ private function connectToDb(){
 
  public function gitClone(string $userFolder,string $projectFolder,string $url): string
  {
-    return $this->wwwRoute.'/"'.$userFolder.'" && git clone '.$url.' "'.$projectFolder.'" 2>&1';
+    return $this->wwwUsersRoute.'/"'.$userFolder.'" && git clone '.$url.' "'.$projectFolder.'" 2>&1';
  }
 
  public function userFolder(string $userName,?string $deleteFolder =null): string
  {
     if($deleteFolder === null){
-        return $this->wwwRoute.' && mkdir "'.$userName.'"';
+        return $this->wwwUsersRoute.' && mkdir '.$userName.' && '. storage_path().'/sh && mkdir '.$userName;
     }else{
-        return $this->wwwRoute.'/"'.$userName.'" && rm -r "'.$deleteFolder.'"';
+        return $this->wwwUsersRoute.'/'.$userName.' && rm -r '.$deleteFolder.'';
     }
  }
- public function shOutputFolder(string $userName): string
- {
-        return $this->wwwRoute.'/"'.$userName.'" && mkdir sh';
- }
+
  public function composerInstall(string $userFolder,string $projectFolder): string
  {
     return $this->routeToProject($userFolder,$projectFolder).'" && composer install 2>&1';

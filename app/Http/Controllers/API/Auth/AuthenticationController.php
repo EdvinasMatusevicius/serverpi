@@ -25,8 +25,7 @@ class AuthenticationController extends Controller
             User::query()->create($request->getData());
             //-----FOR LATER
             // $cmd = ShellCmdBuilder::userFolder($data['name']);
-            // $cmd2 = ShellCmdBuilder::shOutputFolder($data['name']);
-            // shell_exec($cmd . ' && '.$cmd2);
+            // shell_exec($cmd);
             // --------
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
