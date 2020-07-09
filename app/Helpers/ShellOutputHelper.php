@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace App\Helpers;
 
+use React\EventLoop\Factory;
+use React\EventLoop\TimerInterface;
+
 /**
  * Class ShellOutputHelper
  * @package App\Helpers
@@ -26,6 +29,15 @@ class ShellOutputHelper
          $process = proc_open($cmd, $descriptorspec, $pipes, $cwd);
          
          if (is_resource($process)) {
+
+            $loop = Factory ::create();
+            $loop->addPeriodicTimer(0.5, function (TimerInterface $asyncLoop) use ($process,$loop) {
+                if(!proc_get_status($process)){
+                $loop->cancelTimer($asyncLoop);
+            }
+                echo 'Done' . PHP_EOL;
+            });
+            $loop->run();
              // $pipes now looks like this:
              // 0 => writeable handle connected to child stdin
              // 1 => readable handle connected to child stdout
