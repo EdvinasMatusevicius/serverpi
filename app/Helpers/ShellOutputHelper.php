@@ -25,19 +25,12 @@ class ShellOutputHelper
          );
          
          $cwd = base_path();
-        //  $env = array();
          $process = proc_open($cmd, $descriptorspec, $pipes, $cwd);
-         
+         $exitCode = NULL;
+         $this->asyncShellOutputFileCheck($fileName, $exitCode);
          if (is_resource($process)) {
 
-            $loop = Factory ::create();
-            $loop->addPeriodicTimer(0.5, function (TimerInterface $asyncLoop) use ($process,$loop) {
-                if(!proc_get_status($process)){
-                $loop->cancelTimer($asyncLoop);
-            }
-                echo 'Done' . PHP_EOL;
-            });
-            $loop->run();
+           
              // $pipes now looks like this:
              // 0 => writeable handle connected to child stdin
              // 1 => readable handle connected to child stdout
@@ -55,5 +48,16 @@ class ShellOutputHelper
             return $exitCode;
             //  echo "command returned $return_value\n";
     }
-    }  
+    } 
+     private function asyncShellOutputFileCheck(string $fileName, &$exitCode){
+        $loop = Factory::create();
+        $timeris = 10 + (int)time();
+        $asyncLoop = $loop->addPeriodicTimer(1, function () use ($loop,$fileName,&$asyncLoop,&$exitCode,&$timeris) {
+            if($timeris<(int)time()){
+                $loop->cancelTimer($asyncLoop);
+            }
+            dump(file_get_contents("/var/www/sh/{$fileName}/shell.txt"),$exitCode);
+        });
+    $loop->run();
+     }
 }
