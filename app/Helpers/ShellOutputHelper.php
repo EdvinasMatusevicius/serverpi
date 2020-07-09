@@ -45,6 +45,7 @@ class ShellOutputHelper
              // It is important that you close any pipes before calling
              // proc_close in order to avoid a deadlock
             $exitCode = proc_close($process);
+            dump($exitCode."this is after proc close");
             return $exitCode;
             //  echo "command returned $return_value\n";
     }
@@ -53,10 +54,10 @@ class ShellOutputHelper
         $loop = Factory::create();
         $timeris = 10 + (int)time();
         $asyncLoop = $loop->addPeriodicTimer(1, function () use ($loop,$fileName,&$asyncLoop,&$exitCode,&$timeris) {
-            if($timeris<(int)time()){
+            if($exitCode !== NULL){
                 $loop->cancelTimer($asyncLoop);
             }
-            dump(file_get_contents("/var/www/sh/{$fileName}/shell.txt"),$exitCode);
+            dump(file_get_contents("/var/www/sh/{$fileName}/shell.txt"),$exitCode ."this is exit code in loop");
         });
     $loop->run();
      }
