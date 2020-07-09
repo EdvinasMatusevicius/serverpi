@@ -178,8 +178,10 @@ class ShellController extends Controller
             
 
             $stream = ShellOutput::writeToFile($cmd,$user->name,);
+            dump($stream ,'AFTER STREAM GO INITIATED IN SHELLCONTROLLER');
            if($stream === 0){
-            return redirect()->route('showShell',['project'=>$project])->with('status',$cmdNameArr[$command]);
+               dump($stream, 'WHEN STREM COMPLETED');
+            // return redirect()->route('showShell',['project'=>$project])->with('status',$cmdNameArr[$command]);
         }
         throw new Exception('error accured');
         } catch (Exception $exception) {

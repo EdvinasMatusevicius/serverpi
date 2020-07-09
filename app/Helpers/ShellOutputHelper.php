@@ -27,7 +27,7 @@ class ShellOutputHelper
          $cwd = base_path();
          $process = proc_open($cmd, $descriptorspec, $pipes, $cwd);
          $exitCode = NULL;
-         $this->asyncShellOutputFileCheck($fileName, $exitCode);
+        // $this->asyncShellOutputFileCheck($fileName, $exitCode);
          if (is_resource($process)) {
 
            
