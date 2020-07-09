@@ -13,7 +13,7 @@ use React\EventLoop\TimerInterface;
  */
 class ShellOutputHelper
 {
-    public function writeToFile(string $cmd,?string $fileName=null):int
+    public function writeToFile(string $cmd,string $fileName, &$asyncShellOutputStop):int
     { //FILE NAME NULL WHILE TESTING TO SHELLTEST.TXT
         //PI route /var/www/users/-$userName-/sh/-$fileName.txt-
         $descriptorspec = array(
@@ -45,19 +45,19 @@ class ShellOutputHelper
              // It is important that you close any pipes before calling
              // proc_close in order to avoid a deadlock
             $exitCode = proc_close($process);
-            dump($exitCode."this is after proc close");
+            $asyncShellOutputStop = true;
+            dump($asyncShellOutputStop);
             return $exitCode;
             //  echo "command returned $return_value\n";
     }
     } 
-     private function asyncShellOutputFileCheck(string $fileName, &$exitCode){
+     public function asyncShellOutputFileCheck(string $fileName, &$asyncShellOutputStop){
         $loop = Factory::create();
-        $timeris = 10 + (int)time();
-        $asyncLoop = $loop->addPeriodicTimer(1, function () use ($loop,$fileName,&$asyncLoop,&$exitCode,&$timeris) {
-            if($exitCode !== NULL){
+        $asyncLoop = $loop->addPeriodicTimer(1, function () use ($loop,$fileName,&$asyncLoop,&$asyncShellOutputStop) {
+            if($asyncShellOutputStop === true){
                 $loop->cancelTimer($asyncLoop);
             }
-            dump(file_get_contents("/var/www/sh/{$fileName}/shell.txt"),$exitCode ."this is exit code in loop");
+            dump(file_get_contents("/var/www/sh/{$fileName}/shell.txt"),$asyncShellOutputStop);
         });
     $loop->run();
      }

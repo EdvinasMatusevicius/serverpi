@@ -6,7 +6,8 @@ namespace App\Facades;
 
 use Illuminate\Support\Facades\Facade;
 /**
-*@method static void writeToFile(string $cmd,?string $fileName=null)
+*@method static void writeToFile(string $cmd,string $fileName, &$asyncShellOutputStop)
+*@method static void asyncShellOutputFileCheck(string $fileName, &$asyncShellOutputStop)
 *
 **/
 
