@@ -16,7 +16,7 @@ class ShellOutputHelper
     public function writeToFile(string $cmd,string $fileName, &$asyncShellOutputStop):int
     { //FILE NAME NULL WHILE TESTING TO SHELLTEST.TXT
         //PI route /var/www/users/-$userName-/sh/-$fileName.txt-
-        ob_implicit_flush(true);
+        ob_implicit_flush(1);
         ob_end_flush();
         $descriptorspec = array(
             0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
@@ -35,9 +35,8 @@ class ShellOutputHelper
          $cwd = base_path();
          $process = proc_open($cmd, $descriptorspec, $pipes, $cwd);
          if (is_resource($process)) {
-            while ($s = stream_get_contents($pipes[0])) {
+            while ($s = fgets($pipes[1],1024)) {
                 print $s;
-        
             }
 
 
