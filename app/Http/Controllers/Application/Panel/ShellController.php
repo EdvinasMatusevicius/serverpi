@@ -176,12 +176,9 @@ class ShellController extends Controller
             $user=auth()->user();
             $cmd = ShellCmdBuilder::$command($user->name,$project,$dynamicCmdValAfterCdRoute);
             
-            $asyncLoopStop=false;
-            ShellOutput::asyncShellOutputFileCheck($user->name,$asyncLoopStop);
-            $stream = ShellOutput::writeToFile($cmd,$user->name,$asyncLoopStop);
+            $stream = ShellOutput::writeToFile($cmd,$user->name);
            if($stream === 0){
-               dump($stream, 'WHEN STREM COMPLETED');
-            // return redirect()->route('showShell',['project'=>$project])->with('status',$cmdNameArr[$command]);
+            return redirect()->route('showShell',['project'=>$project])->with('status',$cmdNameArr[$command]);
         }
         throw new Exception('error accured');
         } catch (Exception $exception) {
