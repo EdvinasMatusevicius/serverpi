@@ -43,7 +43,7 @@ class RegisterRequest extends LoginRequest
     /**
      * @return string
      */
-    private function getUserName(): string
+    public function getUserName(): string
     {
         return $this->input('name');
     }

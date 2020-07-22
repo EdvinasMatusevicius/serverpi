@@ -27,7 +27,6 @@ class ApplicationController extends Controller
         try {
        $user=auth()->user();
        $data = $request->getData();
-       //create unique file and give to write file
        $cmd = ShellCmdBuilder::gitClone($user->name,$data['slug'],$data['giturl']);
        $stream = ShellOutput::runAndStreamCmd($cmd);
 

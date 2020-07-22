@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Auth;
 
+use App\Facades\ShellCmdBuilder;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\Auth\LoginRequest;
 use App\Http\Requests\API\Auth\RegisterRequest;
@@ -23,10 +24,8 @@ class AuthenticationController extends Controller
     {
         try {
             User::query()->create($request->getData());
-            //-----FOR LATER
-            // $cmd = ShellCmdBuilder::userFolder($data['name']);
-            // shell_exec($cmd);
-            // --------
+            $cmd = ShellCmdBuilder::userFolder($request->getUserName());
+            shell_exec($cmd);
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
         }
