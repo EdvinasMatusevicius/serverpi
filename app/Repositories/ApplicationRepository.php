@@ -59,9 +59,10 @@ class ApplicationRepository
         }
     }
     public function applicationAddDatabase($slug){
-        $applicationClass = $this->applicationClass();
-        $dbName = str_replace("-","_",$slug);
-        return $applicationClass::where('slug','=',$slug)->update(['database'=>$dbName]);
+        if(!$this->applicationHasDatabase($slug))    
+            $applicationClass = $this->applicationClass();
+            $dbName = str_replace("-","_",$slug);
+            return $applicationClass::where('slug','=',$slug)->update(['database'=>$dbName]);
     }
 
     public function applicationSetDeployed($slug){
