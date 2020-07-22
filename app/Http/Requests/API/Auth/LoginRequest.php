@@ -33,4 +33,11 @@ class LoginRequest extends FormRequest
     {
         return $this->only(['email', 'password']);
     }
+    /**
+     * @return string
+     */
+    public function getUserEmail(): string
+    {
+        return $this->input('email');
+    }
 }
