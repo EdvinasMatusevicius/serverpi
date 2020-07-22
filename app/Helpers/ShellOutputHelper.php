@@ -13,7 +13,7 @@ use React\EventLoop\TimerInterface;
  */
 class ShellOutputHelper
 {
-    public function writeToFile(string $cmd,string $fileName, &$asyncShellOutputStop):int
+    public function runAndStreamCmd(string $cmd,string $fileName, &$asyncShellOutputStop):int
     { //FILE NAME NULL WHILE TESTING TO SHELLTEST.TXT
         //PI route /var/www/users/-$userName-/sh/-$fileName.txt-
         ob_implicit_flush(1);
@@ -43,7 +43,8 @@ class ShellOutputHelper
 
             //-------------------------------
     //          fwrite($pipes[0],"");
-             fclose($pipes[0]);
+             fclose($pipes[1]);
+             //  fclose($pipes[0]);
           
             $exitCode = proc_close($process);
             return $exitCode;

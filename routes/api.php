@@ -34,7 +34,6 @@ Route::namespace('API\Auth')->prefix('auth')->group(function (){
 Route::namespace('API')->middleware('auth:api')->group(function (){
     
     Route::namespace('Application')->group(function(){
-        Route::get('/new-application', 'ApplicationController@index')->name('newApplication');
         Route::post('/new-application', 'ApplicationController@create')->name('newApplicationCreate');
 
         Route::namespace('Panel')->group(function(){

@@ -12,6 +12,7 @@ class AdminApplication extends Model
         'applicationName',
         'slug',
         'language',
+        'deployed',
         'database'
     ];
     public function owner():BelongsTo

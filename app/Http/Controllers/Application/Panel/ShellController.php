@@ -102,7 +102,7 @@ class ShellController extends Controller
             $user=auth()->user();
             //from db check which language
             $cmd =  NginxConfigBuilder::phpApplicationCmd($user->name,$request->project,$request->path);
-            $stream = ShellOutput::writeToFile($cmd,$user->name,);
+            $stream = ShellOutput::runAndStreamCmd($cmd,$user->name,);
             if($stream === 0){
              return redirect()->route('showShell',['project'=>$request->project])->with('status','sukure configa nginx');
          }
@@ -122,7 +122,7 @@ class ShellController extends Controller
             return redirect()->route('home',['project'=>$project])->with('danger','something went wrong '.$exception->getMessage());
         }
     }
-    private function dbTryCatchBlock (string $project,string $command,string $password,?string $customQuery =null){
+    private function dbTryCatchBlock (string $project,string $command,?string $password=null,?string $customQuery =null){
         $cmdNameArr = [
             'dbAndUserCreate'=>'databbase and user created',
             'dbAndPrivilegeCreate'=> 'databbase created',
@@ -138,7 +138,7 @@ class ShellController extends Controller
         try {
             $user=auth()->user();
             $cmd = ShellCmdBuilder::$command($user->name,$databaseName,$password,$customQuery);
-            $stream = ShellOutput::writeToFile($cmd,$user->name,);
+            $stream = ShellOutput::runAndStreamCmd($cmd,$user->name,);
 
            if($stream === 0){ 
                     if($command === 'dbAndUserCreate'){
@@ -176,7 +176,7 @@ class ShellController extends Controller
             $user=auth()->user();
             $cmd = ShellCmdBuilder::$command($user->name,$project,$dynamicCmdValAfterCdRoute);
             
-            $stream = ShellOutput::writeToFile($cmd,$user->name);
+            $stream = ShellOutput::runAndStreamCmd($cmd,$user->name);
            if($stream === 0){
             return redirect()->route('showShell',['project'=>$project])->with('status',$cmdNameArr[$command]);
         }

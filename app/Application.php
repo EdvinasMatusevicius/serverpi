@@ -12,6 +12,7 @@ class Application extends Model
         'applicationName',
         'slug',
         'language',
+        'deployed',
         'database'
     ];
     public function owner():BelongsTo

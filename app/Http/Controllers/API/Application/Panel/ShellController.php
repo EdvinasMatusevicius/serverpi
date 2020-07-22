@@ -6,7 +6,11 @@ use App\Facades\NginxConfigBuilder;
 use App\Facades\ShellCmdBuilder;
 use App\Facades\ShellOutput;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Shell\CustomArtisanRunRequest;
+use App\Http\Requests\API\Shell\CustomArtisanRunRequest;
+use App\Http\Requests\API\Shell\DatabaseCreateRequest;
+use App\Http\Requests\API\Shell\DatabaseCustomQueryRequest;
+use App\Http\Responses\ApiResponse;
+use App\Repositories\ApplicationRepository;
 use App\Repositories\UserRepository;
 use Exception;
 use Illuminate\Http\Request;
@@ -15,14 +19,17 @@ use Illuminate\View\View;
 class ShellController extends Controller
 {
     private $userRepository;
+    private $applicationRepository;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository, ApplicationRepository $applicationRepository)
     {
         $this->userRepository = $userRepository;
+        $this->applicationRepository = $applicationRepository;
     }
  
     public function showShell(Request $request): View
     {
+        //ar yra sukurta db ir db useris  pasiusti info 
         return view('panel.shellCommandsSection',[
             'project'=> $request->project
         ]);
@@ -49,14 +56,7 @@ class ShellController extends Controller
 
     }
     public function get_env_values(Request $request){
-    try{
-        $user=auth()->user();
-        $cmd = ShellCmdBuilder::getEnvFileValues($user->name,$request->project);
-        $values = shell_exec($cmd);
-        return view('panel/shellCommandsSection',['project'=>$request->project,'values'=>$values]);
-    } catch (Exception $exception) {
-        return redirect()->route('home',['project'=>$request->project])->with('danger','something went wrong '.$exception->getMessage());
-    }
+        return $this->getValueTryBlock($request->project,'getEnvFileValues','values');
     }
     public function write_to_env_file(Request $request){
         return $this->tryCatchBlock($request->project,'writeToEnvFile',$request->envVars);
@@ -65,21 +65,22 @@ class ShellController extends Controller
     public function app_key_generate(Request $request){
         return $this->tryCatchBlock($request->project,'appKeyGenerate');
 
+    }  
+
+    public function config_cache(Request $request){
+        return $this->tryCatchBlock($request->project,'configCashe');
+
     }
     public function app_storage_link(Request $request){
         return $this->tryCatchBlock($request->project,'appStorageLink');
 
     }
-    public function db_and_user_create(Request $request){
-        return $this->tryCatchBlockDb($request->project,'dbAndUserCreate',$request->password);
-        dd($this->userRepository->userHasRepositoryUser());
-        // dd($this->userRepository->userHasRepositoryUser());
+    public function db_create(DatabaseCreateRequest $request){
+
+        return $this->dbTryCatchBlock($request->project,'dbCreate',$request->password);
     }
-    public function db_and_privilege_create(Request $request){
-        return $this->tryCatchBlockDb($request->project,'dbAndPrivilegeCreate',$request->password);
-    }
-    public function db_custom_query(Request $request){
-        return $this->tryCatchBlockDb($request->project,'dbAndPrivilegeCreate',$request->password,$request->customquery);
+    public function db_custom_query(DatabaseCustomQueryRequest $request){
+        return $this->dbTryCatchBlock($request->project,'dbCustomQuery',$request->password,$request->customquery);
     }
     public function db_migrate(Request $request){
         return $this->tryCatchBlock($request->project,'dbMigrate');
@@ -102,33 +103,73 @@ class ShellController extends Controller
             $user=auth()->user();
             //from db check which language
             $cmd =  NginxConfigBuilder::phpApplicationCmd($user->name,$request->project,$request->path);
-            $stream = ShellOutput::writeToFile($cmd,$user->name,);
+            $stream = ShellOutput::runAndStreamCmd($cmd,$user->name,);
             if($stream === 0){
-             return redirect()->route('showShell',['project'=>$request->project])->with('status','sukure configa nginx');
+            //  return redirect()->route('showShell',['project'=>$request->project])->with('status','sukure configa nginx');
+            return (new ApiResponse())->success([
+                'project'=>$request->project,
+            ]);
          }
         } catch (Exception $exception) {
-            return redirect()->route('showShell',['project'=>$request->project])->with('danger','something went wrong '.$exception->getMessage());
+            return (new ApiResponse())->exception($exception->getMessage());
+
+            // return redirect()->route('showShell',['project'=>$request->project])->with('danger','something went wrong '.$exception->getMessage());
 
         }
     }
 
-    private function tryCatchBlockDb (string $project,string $command,string $password,?string $customQuery =null){
+    private function getValueTryBlock(string $project,string $command, string $frontName){ //front name is name of form input
+        try{
+            $user=auth()->user();
+            $cmd = ShellCmdBuilder::$command($user->name,$project);
+            $values = shell_exec($cmd);
+            // return view('panel/shellCommandsSection',['project'=>$project,$frontName=>$values]);
+            return (new ApiResponse())->success([
+                $frontName=>$values,
+                'project'=>$project,
+            ]);
+        } catch (Exception $exception) {
+            return (new ApiResponse())->exception($exception->getMessage());
+
+            // return redirect()->route('home',['project'=>$project])->with('danger','something went wrong '.$exception->getMessage());
+        }
+    }
+    private function dbTryCatchBlock (string $project,string $command,?string $password=null,?string $customQuery =null){
         $cmdNameArr = [
-            'dbAndUserCreate'=>'db and user initiated',
-            'dbCustomQuery'=>'########',
+            'dbAndUserCreate'=>'databbase and user created',
+            'dbAndPrivilegeCreate'=> 'databbase created',
+            'dbCustomQuery'=>'database command executed',
         ];
+        $databaseName = str_replace("-","_",$project);
+        if($command === 'dbCreate' && $this->userRepository->userHasRepositoryUser())
+            { $command = 'dbAndPrivilegeCreate';
+        }else if($command === 'dbCreate'){
+            $command = 'dbAndUserCreate';
+        }
 
         try {
             $user=auth()->user();
-            $cmd = ShellCmdBuilder::$command($user->name,$project,$password,$customQuery);
-            dd($cmd);
-            // $stream = ShellOutput::writeToFile($cmd,$user->name,);
-        //    if($stream === 0){
-        //     return redirect()->route('showShell',['project'=>$project])->with('status',$cmdNameArr[$command]);
-        // }
+            $cmd = ShellCmdBuilder::$command($user->name,$databaseName,$password,$customQuery);
+            $stream = ShellOutput::runAndStreamCmd($cmd,$user->name,);
+
+           if($stream === 0){ 
+                    if($command === 'dbAndUserCreate'){
+                        $this->userRepository->updateRepositoryUser();//TEST IN RASPBERY IF DB SHELL COMMANDS WORK
+                    }
+                    if($command === 'dbAndUserCreate' || $command === 'dbAndPrivilegeCreate') {
+                        $this->applicationRepository->applicationAddDatabase($project);
+                    }
+                return (new ApiResponse())->success([
+                    'status'=>$cmdNameArr[$command],
+                    'project'=>$project,
+                ]);
+                // return redirect()->route('showShell',['project'=>$project])->with('status',$cmdNameArr[$command]);
+        }
         throw new Exception('error accured');
         } catch (Exception $exception) {
-            return redirect()->route('showShell',['project'=>$project])->with('danger','something went wrong '.$exception->getMessage());
+            return (new ApiResponse())->exception($exception->getMessage());
+
+            // return redirect()->route('showShell',['project'=>$project])->with('danger','something went wrong '.$exception->getMessage());
         }
   }
     
@@ -146,18 +187,25 @@ class ShellController extends Controller
             'dumpAutoload'=>'composer dump-autoload command finished',
             'dbSeed'=>'database seed comand finished',
             'customArtisan'=>'artisan comand finished',
+            'configCashe'=>'Configuration cached successfully!'
         ];
 
         try {
             $user=auth()->user();
             $cmd = ShellCmdBuilder::$command($user->name,$project,$dynamicCmdValAfterCdRoute);
-            $stream = ShellOutput::writeToFile($cmd,$user->name,);
+            
+            $stream = ShellOutput::runAndStreamCmd($cmd,$user->name);
            if($stream === 0){
-            return redirect()->route('showShell',['project'=>$project])->with('status',$cmdNameArr[$command]);
+            return (new ApiResponse())->success([
+                'status'=>$cmdNameArr[$command],
+                'project'=>$project,
+            ]);
+            // return redirect()->route('showShell',['project'=>$project])->with('status',$cmdNameArr[$command]);
         }
         throw new Exception('error accured');
         } catch (Exception $exception) {
-            return redirect()->route('showShell',['project'=>$project])->with('danger','something went wrong '.$exception->getMessage());
+            return (new ApiResponse())->exception($exception->getMessage());
+            // return redirect()->route('showShell',['project'=>$project])->with('danger','something went wrong '.$exception->getMessage());
         }
   }
 }
