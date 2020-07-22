@@ -98,23 +98,41 @@ class ShellController extends Controller
         return $this->tryCatchBlock($request->project,'customArtisan',$request->artisanCmd);
 
     }
+
     public function nginx_config(Request $request){
-        try {
+      if($this->applicationRepository->applicationIsDeployed($request->project) !== '1'){  
+          try {
             $user=auth()->user();
-            //from db check which language
-            $cmd =  NginxConfigBuilder::phpApplicationCmd($user->name,$request->project,$request->path);
+            $language = $this->applicationRepository->applicationLanguage($request->project);
+            switch ($language) {
+                case '1':
+                    $fnName = "phpApplicationCmd";
+                    break;
+                case '2':
+                    $fnName = "someNodeFunction"; //need to create this function in nginx config helper
+                    break;
+                case '3':
+                    $fnName = "staticApplicationCmd";
+                    break;
+                default:
+                    throw new Exception("Invalid project language", 1);
+                    break;
+            }
+            $cmd =  NginxConfigBuilder::$fnName($user->name,$request->project,$request->path);
             $stream = ShellOutput::runAndStreamCmd($cmd,$user->name,);
             if($stream === 0){
+                $this->applicationRepository->applicationSetDeployed($request->project);
             //  return redirect()->route('showShell',['project'=>$request->project])->with('status','sukure configa nginx');
-            return (new ApiResponse())->success([
-                'project'=>$request->project,
-            ]);
-         }
+                return (new ApiResponse())->success([
+                    'project'=>$request->project,
+                ]);
+            }
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
 
             // return redirect()->route('showShell',['project'=>$request->project])->with('danger','something went wrong '.$exception->getMessage());
 
+        }
         }
     }
 
@@ -194,18 +212,17 @@ class ShellController extends Controller
             $user=auth()->user();
             $cmd = ShellCmdBuilder::$command($user->name,$project,$dynamicCmdValAfterCdRoute);
             
-            $stream = ShellOutput::runAndStreamCmd($cmd,$user->name);
-           if($stream === 0){
+            // $stream = ShellOutput::runAndStreamCmd($cmd,$user->name);  
+        //    if($stream === 0){
             return (new ApiResponse())->success([
                 'status'=>$cmdNameArr[$command],
                 'project'=>$project,
+                'comand'=>$cmd
             ]);
-            // return redirect()->route('showShell',['project'=>$project])->with('status',$cmdNameArr[$command]);
-        }
+        // }
         throw new Exception('error accured');
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
-            // return redirect()->route('showShell',['project'=>$project])->with('danger','something went wrong '.$exception->getMessage());
         }
   }
 }
