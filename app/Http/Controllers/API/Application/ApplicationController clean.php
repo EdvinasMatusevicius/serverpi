@@ -30,15 +30,15 @@ class ApplicationController extends Controller
        $cmd = ShellCmdBuilder::gitClone($user->name,$data['slug'],$data['giturl']);
        $stream = ShellOutput::runAndStreamCmd($cmd,$request);
 
-       return (new ApiResponse())->success([
-           'project'=>$data['slug'],
-       ]);
         if($stream ===0){
             $fieldsArr =['applicationName','slug','language'];
             if(isset($data['database'])){
                 array_push($fieldsArr,'database');
             };
             $this->applicationRepository->saveWithRelation(Arr::only($data,$fieldsArr));
+            return (new ApiResponse())->success([
+                'project'=>$data['slug'],
+            ]);
             // return redirect()->route('panel',['project'=>$data['slug']])->with('status',$application->applicationName .' project cloned successfully ');
        }
        return (new ApiResponse())->exception('Error occurred while saving application');

@@ -18,7 +18,7 @@ private function routeToProject(string $userFolder,string $projectFolder){
     return $this->wwwUsersRoute.'/"'.$userFolder.'"/"'.$projectFolder;
 }
 private function routeToScripts(){
-    return 'cd '. $this->wwwRoute .'/scripts';  
+    return $this->wwwRoute .'/scripts ';  
 }
 private function connectToDb(){
     return 'mysql -u'.env('DB_USERNAME','root').' -p'.env('DB_PASSWORD','');

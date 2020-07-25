@@ -32,7 +32,20 @@ class ApiResponse
 
         return response()->json($response, JsonResponse::HTTP_OK);
     }
+    /**
+     * @param null $data
+     * @return JsonResponse
+     */
+    public function sseResponse($data = null): JsonResponse
+    {
+        $response = $this->base();
 
+        if ($data !== null) {
+            $response['data'] = $data;
+        }
+
+        return response()->json($response, JsonResponse::HTTP_OK)->send();
+    }
     /**
      * @return JsonResponse
      */
