@@ -11,7 +11,9 @@ class ShellOutputController extends Controller
     
     public function getShellFileVals(Request $request){
         $user=auth()->user();
-        $routeToSh = 'cd /var/www/sh/'.$user->name;
+        // $routeToSh = 'cd /var/www/sh/'.$user->name;
+        $routeToSh = '/var/www/sh/'.$user->name;
+
         // $routeToSh = 'cd /var/www/sh/dude';
         $output = file_get_contents($routeToSh.'/shell.txt');
         $err = file_get_contents($routeToSh.'/shellerrors.txt');
