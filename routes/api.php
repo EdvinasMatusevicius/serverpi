@@ -15,7 +15,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+    $user = $request->user();
+    return [
+        'name'=> $user->name,
+        'email'=>$user->email,
+        'has_db_user'=>$user->has_db_user,
+    ];
 });
 Route::namespace('API\Auth')->prefix('auth')->group(function (){
     
@@ -35,6 +40,7 @@ Route::namespace('API')->middleware('auth:api')->group(function (){
     
     Route::namespace('Application')->group(function(){
         Route::post('/new-application', 'ApplicationController@create')->name('newApplicationCreate');
+        Route::post('/app-list', 'ApplicationController@getAppList')->name('newApplicationCreate');
 
         Route::namespace('Panel')->group(function(){
             Route::get('/shell-values','ShellOutputController@getShellFileVals');

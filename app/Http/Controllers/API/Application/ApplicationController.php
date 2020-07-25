@@ -9,6 +9,7 @@ use App\Http\Requests\API\ApplicationStoreRequest;
 use App\Http\Responses\ApiResponse;
 use App\Repositories\ApplicationRepository;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\View\View;
 
@@ -39,16 +40,25 @@ class ApplicationController extends Controller
             return (new ApiResponse())->success([
                 'project'=>$data['slug'],
             ]);
-            // return redirect()->route('panel',['project'=>$data['slug']])->with('status',$application->applicationName .' project cloned successfully ');
        }
        return (new ApiResponse())->exception('Error occurred while saving application');
-    //    return back()->with('danger','Error accured')->withInput();
 
-    } catch (Exception $exception) {
-       return (new ApiResponse())->exception($exception->getMessage());
+        } catch (Exception $exception) {
+           return (new ApiResponse())->exception($exception->getMessage());
 
-    //    return back()->with('danger','something went wrong '.$exception->getMessage())->withInput();
-
+        }
     }
+    public function getAppList(Request $request)
+    {
+        try {
+            $applicationsList = $this->applicationRepository->userApplicationsList();
+            return (new ApiResponse())->success([
+               'appList'=> $applicationsList
+            ]);
+
+        } catch (Exception $exception) {
+           return (new ApiResponse())->exception($exception->getMessage());
+        }
     }
+    
 }

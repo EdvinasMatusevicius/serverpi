@@ -23,7 +23,7 @@ class ApplicationRepository
         $user = Auth::user();
         $userApplications = $user->applications;
         $filteredApplications = $userApplications->map(function($app){
-            return $app->only(['applicationName','slug']);
+            return $app->only(['applicationName','slug','language','database']);
         });
         return $filteredApplications->toArray();
 
