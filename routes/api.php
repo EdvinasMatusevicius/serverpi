@@ -40,7 +40,7 @@ Route::namespace('API')->middleware('auth:api')->group(function (){
     
     Route::namespace('Application')->group(function(){
         Route::post('/new-application', 'ApplicationController@create')->name('newApplicationCreate');
-        Route::post('/app-list', 'ApplicationController@getAppList')->name('newApplicationCreate');
+        Route::get('/app-list', 'ApplicationController@getAppList')->name('newApplicationCreate');
 
         Route::namespace('Panel')->group(function(){
             Route::get('/shell-values','ShellOutputController@getShellFileVals');
