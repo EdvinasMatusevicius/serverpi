@@ -210,14 +210,14 @@ class ShellController extends Controller
             $user=auth()->user();
             $cmd = ShellCmdBuilder::$command($user->name,$project,$dynamicCmdValAfterCdRoute);
             
-            // $stream = ShellOutput::writeToFile($cmd,$user->name);  
-        //    if($stream === 0){
+            $stream = ShellOutput::writeToFile($cmd,$user->name);  
+           if($stream === 0){
             return (new ApiResponse())->success([
                 'status'=>$cmdNameArr[$command],
                 'project'=>$project,
                 'comand'=>$cmd
             ]);
-        // }
+        }
         throw new Exception('error accured');
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
