@@ -27,10 +27,10 @@ class ApplicationStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'applicationName'=>'sometimes',
-            'applicationSlug'=>'sometimes',
-            'giturl'=>'sometimes',
-            'language'=>'sometimes',
+            'applicationName'=>'required|string|regex:/(?! )^([a-z0-9 ])+(?<! )$/|unique:applications|unique:admin_applications|min:3|max:40',
+            'applicationSlug'=>'nullable|string|regex:/(?!-)^([a-z0-9-])+(?<!-)$/|unique:applications,slug|unique:admin_applications,slug|min:3|max:40',
+            'giturl'=>'required|min:23|url',
+            'language'=>'required|integer|max:3',
             'database'=>'sometimes|regex:/(?!-)^([a-z0-9-])+(?<!-)$/|max:40'
             //set if deployed so that open app link would appear in panel (not sure why database is here)
         ];

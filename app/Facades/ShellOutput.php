@@ -6,7 +6,7 @@ namespace App\Facades;
 
 use Illuminate\Support\Facades\Facade;
 /**
-*@method static void runAndStreamCmd(string $cmd,?string $fileName=null)
+*@method static void writeToFile(string $cmd,?string $fileName=null)
 *
 **/
 

@@ -119,7 +119,7 @@ class ShellController extends Controller
                     break;
             }
             $cmd =  NginxConfigBuilder::$fnName($user->name,$request->project,$request->path);
-            $stream = ShellOutput::runAndStreamCmd($cmd);
+            $stream = ShellOutput::writeToFile($cmd,$user->name);
             if($stream === 0){
                 $this->applicationRepository->applicationSetDeployed($request->project);
             //  return redirect()->route('showShell',['project'=>$request->project])->with('status','sukure configa nginx');
@@ -168,7 +168,7 @@ class ShellController extends Controller
         try {
             $user=auth()->user();
             $cmd = ShellCmdBuilder::$command($user->name,$databaseName,$password,$customQuery);
-            $stream = ShellOutput::runAndStreamCmd($cmd);
+            $stream = ShellOutput::writeToFile($cmd,$user->name);
 
            if($stream === 0){ 
                     if($command === 'dbAndUserCreate'){
@@ -212,7 +212,7 @@ class ShellController extends Controller
             $user=auth()->user();
             $cmd = ShellCmdBuilder::$command($user->name,$project,$dynamicCmdValAfterCdRoute);
             
-            // $stream = ShellOutput::runAndStreamCmd($cmd);  
+            // $stream = ShellOutput::writeToFile($cmd,$user->name);  
         //    if($stream === 0){
             return (new ApiResponse())->success([
                 'status'=>$cmdNameArr[$command],
