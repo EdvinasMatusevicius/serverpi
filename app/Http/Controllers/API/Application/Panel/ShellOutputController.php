@@ -15,8 +15,10 @@ class ShellOutputController extends Controller
         // $output = shell_exec($routeToSh." && cat shell.txt 2>&1");
         // $err = shell_exec($routeToSh." && cat shellerrors.txt 2>&1");
         $routeToSh = 'cd /var/www/sh/dude';
-        $output = shell_exec($routeToSh." && cat shell.txt 2>&1");
-        $err = shell_exec($routeToSh." && cat shellerrors.txt 2>&1");
+        $output = file_get_contents('/var/www/sh/dude/shell.txt');
+        $err= 'adasd';
+        // $output = shell_exec($routeToSh." && cat shell.txt 2>&1");
+        // $err = shell_exec($routeToSh." && cat shellerrors.txt 2>&1");
 
         return (new ApiResponse())->success([
             'output'=>$output,
