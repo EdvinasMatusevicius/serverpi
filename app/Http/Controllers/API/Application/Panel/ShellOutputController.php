@@ -11,12 +11,10 @@ class ShellOutputController extends Controller
     
     public function getShellFileVals(Request $request){
         $user=auth()->user();
-        // $routeToSh = 'cd /var/www/sh/'.$user->name;
-        // $output = shell_exec($routeToSh." && cat shell.txt 2>&1");
-        // $err = shell_exec($routeToSh." && cat shellerrors.txt 2>&1");
-        $routeToSh = 'cd /var/www/sh/dude';
-        $output = file_get_contents('/var/www/sh/dude/shell.txt');
-        $err= 'adasd';
+        $routeToSh = 'cd /var/www/sh/'.$user->name;
+        // $routeToSh = 'cd /var/www/sh/dude';
+        $output = file_get_contents($routeToSh.'/shell.txt');
+        $err = file_get_contents($routeToSh.'/shellerrors.txt');
         // $output = shell_exec($routeToSh." && cat shell.txt 2>&1");
         // $err = shell_exec($routeToSh." && cat shellerrors.txt 2>&1");
 
