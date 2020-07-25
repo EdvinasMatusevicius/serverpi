@@ -37,8 +37,7 @@ Route::namespace('API')->middleware('auth:api')->group(function (){
         Route::post('/new-application', 'ApplicationController@create')->name('newApplicationCreate');
 
         Route::namespace('Panel')->group(function(){
-            // Route::middleware('checkOwner')->get('/{project}/panel', 'PanelController@index')->name('panel');
-            // Route::middleware('checkOwner')->get('/{project}/shell', 'ShellController@showShell')->name('showShell');
+            Route::get('/shell-values','ShellOutputController@getShellFileVals');
 
             //----------------------------------------------------------------------------------------------------- SHELL
             $shellRoutes = ['git_pull','composer_install','app_key_generate','app_storage_link','db_migrate','dump_autoload','db_seed',

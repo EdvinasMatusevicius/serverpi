@@ -141,7 +141,6 @@ class ShellController extends Controller
             $user=auth()->user();
             $cmd = ShellCmdBuilder::$command($user->name,$project);
             $values = shell_exec($cmd);
-            // return view('panel/shellCommandsSection',['project'=>$project,$frontName=>$values]);
             return (new ApiResponse())->success([
                 $frontName=>$values,
                 'project'=>$project,
@@ -149,7 +148,6 @@ class ShellController extends Controller
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
 
-            // return redirect()->route('home',['project'=>$project])->with('danger','something went wrong '.$exception->getMessage());
         }
     }
     private function dbTryCatchBlock (string $project,string $command,?string $password=null,?string $customQuery =null){
