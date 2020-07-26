@@ -20,6 +20,7 @@ class CreateAdminApplicationsTable extends Migration
             $table->string('slug')->unique();
             $table->integer('language')->require();
             $table->string('database')->nullable();
+            $table->string('giturl')->require();
             $table->boolean('deployed')->default(0);
             $table->timestamps();
         });

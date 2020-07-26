@@ -32,10 +32,10 @@ class ApplicationController extends Controller
        $stream = ShellOutput::writeToFile($cmd,$user->name);
 
         if($stream ===0){
-            $fieldsArr =['applicationName','slug','language'];
-            if(isset($data['database'])){
-                array_push($fieldsArr,'database');
-            };
+            $fieldsArr =['applicationName','slug','language','giturl'];
+            // if(isset($data['database'])){
+            //     array_push($fieldsArr,'database'); // would break app if named db before creating it(where db name used as bool to check if db created)
+            // };
             $this->applicationRepository->saveWithRelation(Arr::only($data,$fieldsArr));
             return (new ApiResponse())->success([
                 'project'=>$data['slug'],

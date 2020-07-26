@@ -13,6 +13,7 @@ class Application extends Model
         'slug',
         'language',
         'deployed',
+        'giturl',
         'database'
     ];
     public function owner():BelongsTo
