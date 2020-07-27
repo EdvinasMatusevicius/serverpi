@@ -15,8 +15,6 @@ class NginxConfigHelper
                 $data = "server {
                         listen: 80;
                         server_name {$project}.serverpi.ddns.me;
-                        access_log /var/www/users/{$user}/{$project}/{$project}.log;
-                        error_log /var/www/users/{$user}/{$project}/{$project}.log;
                     
                         root /var/www/users/{$user}/{$project}{$rootCustom};
                     }";
@@ -26,10 +24,6 @@ class NginxConfigHelper
         public function phpApplicationCmd($user,$project,$rootCustom){
                 $data = "server {
                         listen 80;
-               
-                        # Log files for Debugging
-                        access_log /var/www/users/{$user}/{$project}/{$project}.log;
-                        error_log /var/www/users/{$user}/{$project}/{$project}.log;
                
                         # Webroot Directory for Laravel project
                         root /var/www/users/{$user}/{$project}{$rootCustom};
