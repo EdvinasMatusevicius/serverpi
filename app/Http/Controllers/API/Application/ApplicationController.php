@@ -60,5 +60,15 @@ class ApplicationController extends Controller
            return (new ApiResponse())->exception($exception->getMessage());
         }
     }
+    public function getAppDatabase(Request $request){
+        try {
+            $appDatabase = $this->applicationRepository->applicationHasDatabase($request->slug);
+            return (new ApiResponse())->success([
+                'database'=> $appDatabase
+             ]);
+        } catch (Exception $exception) {
+            return (new ApiResponse())->exception($exception->getMessage());
+         }
+    }
     
 }
