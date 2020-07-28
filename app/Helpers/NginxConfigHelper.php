@@ -20,6 +20,19 @@ class NginxConfigHelper
                     }";
                     return $this->nginxConfigCreateAndLinkCmd($data,$project);
         }
+        public function vueBuiltApplicationCmd(string $user,string $project, string $rootCustom){
+                $data="server {
+                        listen 80;
+                        server_name {$project}.serverpi.ddns.me;
+                        root /var/www/users/{$user}/{$project}{$rootCustom};
+                        index   index.html index.htm;    # Always serve index.html for any request
+                        location / {
+                            try_files \$uri \$uri/ /index.html;
+                        }
+                    }";
+                    return $this->nginxConfigCreateAndLinkCmd($data,$project);
+
+        }
 
         public function phpApplicationCmd($user,$project,$rootCustom){
                 $data = "server {

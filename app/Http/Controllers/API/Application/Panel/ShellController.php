@@ -109,7 +109,7 @@ class ShellController extends Controller
                     $fnName = "phpApplicationCmd";
                     break;
                 case '2':
-                    $fnName = "someNodeFunction"; //need to create this function in nginx config helper
+                    $fnName = "vueBuiltApplicationCmd";
                     break;
                 case '3':
                     $fnName = "staticApplicationCmd";
@@ -122,15 +122,12 @@ class ShellController extends Controller
             $stream = ShellOutput::writeToFile($cmd,$user->name);
             if($stream === 0){
                 $this->applicationRepository->applicationSetDeployed($request->project);
-            //  return redirect()->route('showShell',['project'=>$request->project])->with('status','sukure configa nginx');
                 return (new ApiResponse())->success([
                     'project'=>$request->project,
                 ]);
             }
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
-
-            // return redirect()->route('showShell',['project'=>$request->project])->with('danger','something went wrong '.$exception->getMessage());
 
         }
         }
