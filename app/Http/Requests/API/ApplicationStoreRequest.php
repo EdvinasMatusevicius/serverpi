@@ -27,7 +27,7 @@ class ApplicationStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'applicationName'=>'required|string|regex:/(?! )^([a-z0-9 ])+(?<! )$/|unique:applications|unique:admin_applications|min:3|max:40',
+            'applicationName'=>'required|string|regex:/(?! )^([a-zA-Z0-9 ])+(?<! )$/|unique:applications|unique:admin_applications|min:3|max:40',
             'applicationSlug'=>'nullable|string|regex:/(?!-)^([a-z0-9-])+(?<!-)$/|unique:applications,slug|unique:admin_applications,slug|min:3|max:40',
             'giturl'=>'required|min:23|url',
             'language'=>'required|integer|max:3',
