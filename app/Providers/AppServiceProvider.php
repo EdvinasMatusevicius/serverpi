@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Helpers\ShellCmdHelper;
 use App\Helpers\ShellOutputHelper;
 use App\Helpers\NginxConfigHelper;
+use App\Helpers\UserHelper;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -38,6 +39,9 @@ class AppServiceProvider extends ServiceProvider
         });
         $this->app->bind('NginxConfigBuilder',function(){
             return new NginxConfigHelper();
+        });
+        $this->app->bind('UserFacade',function(){
+            return new UserHelper();
         });
     }
 }

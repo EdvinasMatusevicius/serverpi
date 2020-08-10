@@ -2,6 +2,8 @@
 declare(strict_types=1);
 namespace App\Repositories;
 
+use App\Facades\UserFacade;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 
 class UserRepository
@@ -17,6 +19,11 @@ class UserRepository
          * @var Authenticatable $user 
          */
         $user->update(['has_db_user'=>1]);
+    }
+    public function deleteUser($request){
+        $user = User::find(Auth::user()->id);
+        UserFacade::logout($request);
+        $user->delete();
     }
     
 }

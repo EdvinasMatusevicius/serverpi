@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\Auth;
 
 use App\Facades\ShellCmdBuilder;
+use App\Facades\UserFacade;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\Auth\LoginRequest;
 use App\Http\Requests\API\Auth\RegisterRequest;
@@ -14,7 +15,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Lcobucci\JWT\Parser;
 
 class AuthenticationController extends Controller
 {
@@ -68,17 +68,7 @@ class AuthenticationController extends Controller
     public function logout(Request $request)
     {
         try {
-            
-       
-        $value = $request->bearerToken();
-        $tokenId = (new Parser())->parse($value)->getClaim('jti');
-
-        /** @var User $user */
-        $user = auth('api')->user();
-        /** @var Token $token */
-        $token = $user->tokens->find($tokenId);
-        $token->revoke();
-
+        UserFacade::logout($request);
         return new Response('', JsonResponse::HTTP_NO_CONTENT);
 
     } catch (Exception $exception) {

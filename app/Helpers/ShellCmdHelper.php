@@ -41,7 +41,7 @@ private function connectToDb(){
         // return $this->wwwUsersRoute.' && mkdir '.$userName;
 
     }else{
-        return $this->wwwUsersRoute.'/'.$userName.' && rm -r '.$deleteFolder.'';
+        return $this->wwwUsersRoute.' && rm -r '.$userName.'';
     }
  }
 
@@ -76,6 +76,14 @@ private function connectToDb(){
  public function dbAndPrivilegeCreate(string $userName,string $dbName):string
  {
     return $this->connectToDb().' -e "create database '.$dbName.'; GRANT ALL ON '.$dbName.'.* TO \''.$userName.'\'@\'localhost\';"';
+ }
+ public function deleteProjectDb(string $dbName):string
+ {
+    return $this->connectToDb().' -e "DROP DATABASE '.$dbName.';"';
+ }
+ public function deleteDbUser(string $userName):string
+ {
+    return $this->connectToDb().' -e "DROP USER \''.$userName.'\'@\'localhost\';"';
  }
  public function dbCustomQuery(string $userName, string $dbName, string $password,string $customQuery){
     return 'mysql -u'.$userName.' -p'.$password.' -e "USE '.$dbName.'; '.$customQuery.'"';

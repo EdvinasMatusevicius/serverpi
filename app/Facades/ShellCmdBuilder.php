@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Facade;
 *@method static string writeToEnvFile(string $userFolder,string $projectFolder,string $values)
 *@method static string dbAndUserCreate(string $userName, string $dbName, string $password)
 *@method static string dbAndPrivilegeCreate(string $userName,string $dbName)
+*@method static string deleteProjectDb(string $dbName)
+*@method static string deleteDbUser(string $userName)
 *@method static string dbCustomQuery(string $userName, string $dbName, string $password,string $customQuery)
 *@method static string appKeyGenerate(string $userFolder,string $projectFolder)
 *@method static string configCashe(string $userFolder,string $projectFolder)
