@@ -161,10 +161,8 @@ class ShellController extends Controller
         $databaseName = str_replace("-","_",$project);
         $dbUserExists = $this->userRepository->userHasRepositoryUser();
         if($command === 'dbCreate' && $dbUserExists){
-            dd(1,$dbUserExists);
             $command = 'dbAndPrivilegeCreate';
         }else if($command === 'dbCreate'){
-            dd(2,$dbUserExists);
             $command = 'dbAndUserCreate';
         }
 
