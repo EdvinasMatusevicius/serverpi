@@ -33,7 +33,7 @@ class AccountController extends Controller
             }
             ShellCmdBuilder::deleteDbUser($user->name);
             $this->userRepository->deleteUser($request);
-            return (new ApiResponse())->unauthorized('Account deleted');
+            return (new ApiResponse())->unauthorized('Account deleted'); 
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
         }

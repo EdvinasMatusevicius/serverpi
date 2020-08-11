@@ -7,6 +7,7 @@ use App\Facades\ShellCmdBuilder;
 use App\Facades\ShellOutput;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\Shell\CustomArtisanRunRequest;
+use App\Http\Requests\API\Shell\DatabaseAndUserCreateRequest;
 use App\Http\Requests\API\Shell\DatabaseCreateRequest;
 use App\Http\Requests\API\Shell\DatabaseCustomQueryRequest;
 use App\Http\Responses\ApiResponse;
@@ -76,6 +77,10 @@ class ShellController extends Controller
 
     }
     public function db_create(DatabaseCreateRequest $request){
+
+        return $this->dbTryCatchBlock($request->project,'dbCreate',$request->password);
+    }
+    public function db_and_user_create(DatabaseAndUserCreateRequest $request){
 
         return $this->dbTryCatchBlock($request->project,'dbCreate',$request->password);
     }
