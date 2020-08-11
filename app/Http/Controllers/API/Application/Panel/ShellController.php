@@ -180,7 +180,7 @@ class ShellController extends Controller
                     }
                 return (new ApiResponse())->success([
                     'status'=>$cmdNameArr[$command],
-                    'project'=>$project,
+                    'slug'=>$project,
                 ]);
                 // return redirect()->route('showShell',['project'=>$project])->with('status',$cmdNameArr[$command]);
         }
