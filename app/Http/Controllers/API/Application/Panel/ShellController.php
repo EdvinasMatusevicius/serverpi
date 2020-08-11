@@ -154,9 +154,12 @@ class ShellController extends Controller
             'dbCustomQuery'=>'database command executed',
         ];
         $databaseName = str_replace("-","_",$project);
-        if($command === 'dbCreate' && $this->userRepository->userHasRepositoryUser())
-            { $command = 'dbAndPrivilegeCreate';
+        $dbUserExists = $this->userRepository->userHasRepositoryUser();
+        if($command === 'dbCreate' && $dbUserExists){
+            dd(1,$dbUserExists);
+            $command = 'dbAndPrivilegeCreate';
         }else if($command === 'dbCreate'){
+            dd(2,$dbUserExists);
             $command = 'dbAndUserCreate';
         }
 

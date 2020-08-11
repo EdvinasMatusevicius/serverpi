@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Facades\ShellCmdBuilder;
 use App\Http\Controllers\Controller;
+use App\Http\Responses\ApiResponse;
 use App\Repositories\ApplicationRepository;
 use App\Repositories\UserRepository;
 use Exception;
@@ -32,10 +33,9 @@ class AccountController extends Controller
             }
             ShellCmdBuilder::deleteDbUser($user->name);
             $this->userRepository->deleteUser($request);
-            
-            //return code as if token is expired
+            return (new ApiResponse())->unauthorized('Account deleted');
         } catch (Exception $exception) {
-            
+            return (new ApiResponse())->exception($exception->getMessage());
         }
     }
 }
