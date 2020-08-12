@@ -15,10 +15,11 @@ class AccountController extends Controller
 {
     private $userRepository;
     private $applicationRepository;
-    public function __construct(UserRepository $userRepository,ApplicationRepository $applicationRepository)
+
+    public function __construct(UserRepository $userRepository, ApplicationRepository $applicationRepository)
     {
-        $this->$userRepository=$userRepository;
-        $this->$applicationRepository=$applicationRepository;
+        $this->userRepository = $userRepository;
+        $this->applicationRepository = $applicationRepository;
     }
 
     public function delete(Request $request){
