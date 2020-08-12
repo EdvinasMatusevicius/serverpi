@@ -14,14 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::namespace('API')->middleware('guest:api')->group(function (){
-    
-//     Route::delete('user/delete','AccountController@delete');
-
-// });
-
-
-//----test end
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     $user = $request->user();
     return [
@@ -46,7 +38,7 @@ Route::namespace('API\Auth')->prefix('auth')->group(function (){
 
 Route::namespace('API')->middleware('auth:api')->group(function (){
     
-    // Route::delete('user/delete','AccountController@delete');
+    Route::delete('user/delete','AccountController@delete');
 
     Route::namespace('Application')->group(function(){
         Route::post('/new-application', 'ApplicationController@create')->name('newApplicationCreate');
