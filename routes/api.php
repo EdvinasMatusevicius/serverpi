@@ -14,11 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::namespace('API')->middleware('guest:api')->group(function (){
+// Route::namespace('API')->middleware('guest:api')->group(function (){
     
-    Route::delete('user/delete','AccountController@delete');
+//     Route::delete('user/delete','AccountController@delete');
 
-});
+// });
 
 
 //----test end

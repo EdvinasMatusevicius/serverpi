@@ -24,20 +24,19 @@ class AccountController extends Controller
 
     public function delete(Request $request){
         try {
-            // $user=Auth::user();
-            // $cmdUser = ShellCmdBuilder::userFolder($user->name,true);
-            $cmdUser = ShellCmdBuilder::userFolder('test1',true);
+            $user=Auth::user();
+            $cmdUser = ShellCmdBuilder::userFolder($user->name,true);
             $response = shell_exec($cmdUser);
-            // $userApps = $this->applicationRepository->userApplicationsList();
-            // foreach ($userApps as $app){
-            //     if($app['database']){
-            //         shell_exec(ShellCmdBuilder::deleteProjectDb($app['database']));
-            //     }
-            // }
-            // $cmdDbUser = ShellCmdBuilder::deleteDbUser($user->name);
-            // shell_exec($cmdDbUser);
-            // $this->userRepository->deleteUser($request);
-            // return (new ApiResponse())->unauthorized('Account deleted'); 
+            $userApps = $this->applicationRepository->userApplicationsList();
+            foreach ($userApps as $app){
+                if($app['database']){
+                    shell_exec(ShellCmdBuilder::deleteProjectDb($app['database']));
+                }
+            }
+            $cmdDbUser = ShellCmdBuilder::deleteDbUser($user->name);
+            shell_exec($cmdDbUser);
+            $this->userRepository->deleteUser($request);
+            return (new ApiResponse())->unauthorized('Account deleted'); 
             return (new ApiResponse())->unauthorized($response); 
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
