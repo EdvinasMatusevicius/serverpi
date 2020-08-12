@@ -38,6 +38,8 @@ Route::namespace('API\Auth')->prefix('auth')->group(function (){
 
 Route::namespace('API')->middleware('auth:api')->group(function (){
     
+    Route::delete('user/delete','AccountController@delete');
+
     Route::namespace('Application')->group(function(){
         Route::post('/new-application', 'ApplicationController@create')->name('newApplicationCreate');
         Route::get('/app-list', 'ApplicationController@getAppList');
