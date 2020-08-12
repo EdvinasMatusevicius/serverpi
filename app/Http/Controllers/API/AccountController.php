@@ -24,16 +24,19 @@ class AccountController extends Controller
 
     public function delete(Request $request){
         try {
-            $user=Auth::user();
-            ShellCmdBuilder::userFolder($user->name,true);
-            $userApps = $this->applicationRepository->userApplicationsList();
-            foreach ($userApps as $app){
-                if($app['database']){
-                    ShellCmdBuilder::deleteProjectDb($app['database']);
-                }
-            }
-            ShellCmdBuilder::deleteDbUser($user->name);
-            $this->userRepository->deleteUser($request);
+            // $user=Auth::user();
+            // $cmdUser = ShellCmdBuilder::userFolder($user->name,true);
+            $cmdUser = ShellCmdBuilder::userFolder('test1',true);
+            shell_exec($cmdUser);
+            // $userApps = $this->applicationRepository->userApplicationsList();
+            // foreach ($userApps as $app){
+            //     if($app['database']){
+            //         shell_exec(ShellCmdBuilder::deleteProjectDb($app['database']));
+            //     }
+            // }
+            // $cmdDbUser = ShellCmdBuilder::deleteDbUser($user->name);
+            // shell_exec($cmdDbUser);
+            // $this->userRepository->deleteUser($request);
             return (new ApiResponse())->unauthorized('Account deleted'); 
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
