@@ -41,7 +41,7 @@ private function connectToDb(){
         // return $this->wwwUsersRoute.' && mkdir '.$userName;
 
     }else{
-        return $this->wwwUsersRoute.' && rm -r '.$userName.' && '.$this->wwwRoute.'/sh rm -r '.$userName;
+        return $this->wwwUsersRoute.' && rm -r '.$userName.' && '.$this->wwwRoute.'/sh && rm -r '.$userName;
     }
  }
 
