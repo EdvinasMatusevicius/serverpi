@@ -13,8 +13,15 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::namespace('API')->delete('user/delete','AccountController@delete'); //FOR TESTING
 
+Route::namespace('API')->middleware('guest:api')->group(function (){
+    
+    Route::delete('user/delete','AccountController@delete');
+
+});
+
+
+//----test end
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     $user = $request->user();
     return [
