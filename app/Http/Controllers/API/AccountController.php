@@ -27,7 +27,7 @@ class AccountController extends Controller
             // $user=Auth::user();
             // $cmdUser = ShellCmdBuilder::userFolder($user->name,true);
             $cmdUser = ShellCmdBuilder::userFolder('test1',true);
-            shell_exec($cmdUser);
+            $response = shell_exec($cmdUser);
             // $userApps = $this->applicationRepository->userApplicationsList();
             // foreach ($userApps as $app){
             //     if($app['database']){
@@ -37,7 +37,8 @@ class AccountController extends Controller
             // $cmdDbUser = ShellCmdBuilder::deleteDbUser($user->name);
             // shell_exec($cmdDbUser);
             // $this->userRepository->deleteUser($request);
-            return (new ApiResponse())->unauthorized('Account deleted'); 
+            // return (new ApiResponse())->unauthorized('Account deleted'); 
+            return (new ApiResponse())->unauthorized($response); 
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
         }
