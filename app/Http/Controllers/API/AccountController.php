@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Facades\NginxConfigBuilder;
 use App\Facades\ShellCmdBuilder;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
@@ -21,7 +22,7 @@ class AccountController extends Controller
         $this->userRepository = $userRepository;
         $this->applicationRepository = $applicationRepository;
     }
-
+    //ISTRINTI NGINX CONF 
     public function delete(Request $request){
         try {
             $user=Auth::user();
@@ -30,6 +31,7 @@ class AccountController extends Controller
             $userApps = $this->applicationRepository->userApplicationsList();
             foreach ($userApps as $app){
                 if($app['database']){
+                    shell_exec(NginxConfigBuilder::deleteNginxConfig($app['slug']));
                     shell_exec(ShellCmdBuilder::deleteProjectDb($app['database']));
                 }
             }
