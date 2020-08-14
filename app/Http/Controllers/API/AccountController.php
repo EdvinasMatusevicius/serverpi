@@ -30,8 +30,10 @@ class AccountController extends Controller
             $response = shell_exec($cmdUser);
             $userApps = $this->applicationRepository->userApplicationsList();
             foreach ($userApps as $app){
-                if($app['database']){
+                if($app['deployed']){
                     shell_exec(NginxConfigBuilder::deleteNginxConfig($app['slug']));
+                }
+                if($app['database']){
                     shell_exec(ShellCmdBuilder::deleteProjectDb($app['database']));
                 }
             }
