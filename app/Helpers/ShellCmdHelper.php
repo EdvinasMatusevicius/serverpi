@@ -44,7 +44,10 @@ private function connectToDb(){
         return $this->wwwUsersRoute.' && rm -r '.$userName.' && '.$this->wwwRoute.'/sh && rm -r '.$userName;
     }
  }
+ public function deleteApplication(string $userFolder,string $projectFolder){
+    return $this->wwwUsersRoute.'/'.$userFolder.' && rm -r '.$projectFolder;
 
+ }
  public function composerInstall(string $userFolder,string $projectFolder): string
  {
     return $this->routeToProject($userFolder,$projectFolder).'" && composer install 2>&1';

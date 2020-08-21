@@ -70,5 +70,11 @@ class ApplicationController extends Controller
             return (new ApiResponse())->exception($exception->getMessage());
          }
     }
-    
+    public function deleteApp(Request $request){
+        try{
+            
+        } catch (Exception $exception) {
+            return (new ApiResponse())->exception($exception->getMessage());
+         }
+    }
 }
