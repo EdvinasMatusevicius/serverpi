@@ -43,7 +43,10 @@ Route::namespace('API')->middleware('auth:api')->group(function (){
     Route::namespace('Application')->group(function(){
         Route::post('/new-application', 'ApplicationController@create')->name('newApplicationCreate');
         Route::get('/app-list', 'ApplicationController@getAppList');
-        Route::get('/{slug}/database', 'ApplicationController@getAppDatabase');
+        Route::middleware('checkOwner')->group(function(){
+            Route::get('/{project}/database', 'ApplicationController@getAppDatabase');
+            Route::delete('/{project}/delete_app', 'ApplicationController@deleteApp');
+        });
 
         Route::namespace('Panel')->group(function(){
             Route::get('/shell-values','ShellOutputController@getShellFileVals');

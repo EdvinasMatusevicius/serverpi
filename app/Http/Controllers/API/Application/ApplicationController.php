@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Application;
 
+use App\Facades\NginxConfigBuilder;
 use App\Facades\ShellCmdBuilder;
 use App\Facades\ShellOutput;
 use App\Http\Controllers\Controller;
@@ -62,7 +63,7 @@ class ApplicationController extends Controller
     }
     public function getAppDatabase(Request $request){
         try {
-            $appDatabase = $this->applicationRepository->applicationHasDatabase($request->slug);
+            $appDatabase = $this->applicationRepository->applicationHasDatabase($request->project);
             return (new ApiResponse())->success([
                 'database'=> $appDatabase
              ]);
@@ -72,7 +73,17 @@ class ApplicationController extends Controller
     }
     public function deleteApp(Request $request){
         try{
-            
+            $user=auth()->user();
+            shell_exec(ShellCmdBuilder::deleteApplication($user->name,$request->project));
+            $database = $this->applicationRepository->applicationHasDatabase($request->project);
+            $appDeployed = $this->applicationRepository->applicationIsDeployed($request->project);
+            if($database){
+                shell_exec(ShellCmdBuilder::deleteProjectDb($database));
+            }
+            if($appDeployed){
+                shell_exec(NginxConfigBuilder::deleteNginxConfig($request->project));
+            }
+            return (new ApiResponse())->success('App deleted');
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
          }
