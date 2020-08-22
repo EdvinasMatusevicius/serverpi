@@ -75,6 +75,7 @@ class ApplicationController extends Controller
         try{
             $user=auth()->user();
             shell_exec(ShellCmdBuilder::deleteApplication($user->name,$request->project));
+            $this->applicationRepository->deleteApplication($request->project);
             $database = $this->applicationRepository->applicationHasDatabase($request->project);
             $appDeployed = $this->applicationRepository->applicationIsDeployed($request->project);
             if($database){

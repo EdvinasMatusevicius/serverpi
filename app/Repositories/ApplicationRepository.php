@@ -17,7 +17,11 @@ class ApplicationRepository
         
         return $user->applications()->create($data);
     }
-
+    public function deleteApplication($application){
+        $user = Auth::user();
+        Application::query()->where('user_id','=',$user->id)
+        ->where('slug','=',$application)->delete();
+    }
     public function userApplicationsList():array
     {
         $user = Auth::user();
@@ -64,7 +68,6 @@ class ApplicationRepository
             $dbName = str_replace("-","_",$slug);
             return $applicationClass::where('slug','=',$slug)->update(['database'=>$dbName]);
     }
-
     public function applicationSetDeployed($slug){
         $applicationClass = $this->applicationClass();
         return $applicationClass::where('slug','=',$slug)->update(['deployed'=>1]);
