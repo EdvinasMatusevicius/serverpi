@@ -75,7 +75,6 @@ class ApplicationController extends Controller
         try{
             $user=auth()->user();
             shell_exec(ShellCmdBuilder::deleteApplication($user->name,$request->project));
-            $this->applicationRepository->deleteApplication($request->project);
             $database = $this->applicationRepository->applicationHasDatabase($request->project);
             $appDeployed = $this->applicationRepository->applicationIsDeployed($request->project);
             if($database){
@@ -84,6 +83,7 @@ class ApplicationController extends Controller
             if($appDeployed){
                 shell_exec(NginxConfigBuilder::deleteNginxConfig($request->project));
             }
+            $this->applicationRepository->deleteApplication($request->project);
             return (new ApiResponse())->success('App deleted');
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
