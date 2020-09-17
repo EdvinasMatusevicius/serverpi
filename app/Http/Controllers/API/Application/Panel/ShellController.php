@@ -103,7 +103,12 @@ class ShellController extends Controller
         return $this->tryCatchBlock($request->project,'customArtisan',$request->artisanCmd);
 
     }
-
+    // public function nginx_restart(Request $request){
+    //     shell_exec(NginxConfigBuilder::restartNginx());
+    //     return (new ApiResponse())->success([
+    //         'project'=>$request->project,
+    //     ]);
+    // }
     public function nginx_config(Request $request){
       if($this->applicationRepository->applicationIsDeployed($request->project) !== '1'){  
           try {
@@ -126,15 +131,12 @@ class ShellController extends Controller
             $cmd =  NginxConfigBuilder::$fnName($user->name,$request->project,$request->path);
             $nginxConf = ShellOutput::writeToFile($cmd,$user->name);
             if($nginxConf === 0){
-                // $restartCmd = NginxConfigBuilder::restartNginx();
-                // $restartNginx = ShellOutput::writeToFile($restartCmd,$user->name);
+                shell_exec(NginxConfigBuilder::restartNginx());
 
-                // if($restartNginx === 0){
-                    $this->applicationRepository->applicationSetDeployed($request->project);
-                    return (new ApiResponse())->success([
-                        'project'=>$request->project,
-                        ]);
-                // }
+                $this->applicationRepository->applicationSetDeployed($request->project);
+                return (new ApiResponse())->success([
+                    'project'=>$request->project,
+                ]);
             }
             throw new Exception('Failed to set app\'s nginx configuration');
         } catch (Exception $exception) {
@@ -142,6 +144,9 @@ class ShellController extends Controller
 
         }
         }
+        return (new ApiResponse())->success([
+            'project'=>$request->project,
+        ]);
     }
 
     private function getValueTryBlock(string $project,string $command, string $frontName){ //front name is name of form input
