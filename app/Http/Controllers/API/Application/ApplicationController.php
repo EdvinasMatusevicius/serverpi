@@ -82,7 +82,6 @@ class ApplicationController extends Controller
             }
             if($appDeployed){
                 shell_exec(NginxConfigBuilder::deleteNginxConfig($request->project));
-                shell_exec(NginxConfigBuilder::restartNginx());
             }
             $this->applicationRepository->deleteApplication($request->project);
             return (new ApiResponse())->success('App deleted');

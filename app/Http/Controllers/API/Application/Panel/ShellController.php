@@ -103,12 +103,12 @@ class ShellController extends Controller
         return $this->tryCatchBlock($request->project,'customArtisan',$request->artisanCmd);
 
     }
-    // public function nginx_restart(Request $request){
-    //     shell_exec(NginxConfigBuilder::restartNginx());
-    //     return (new ApiResponse())->success([
-    //         'project'=>$request->project,
-    //     ]);
-    // }
+    public function nginx_restart(Request $request){
+        shell_exec(NginxConfigBuilder::restartNginx());
+        return (new ApiResponse())->success([
+            'project'=>$request->project,
+        ]);
+    }
     public function nginx_config(Request $request){
       if($this->applicationRepository->applicationIsDeployed($request->project) !== '1'){  
           try {
@@ -131,8 +131,6 @@ class ShellController extends Controller
             $cmd =  NginxConfigBuilder::$fnName($user->name,$request->project,$request->path);
             $nginxConf = ShellOutput::writeToFile($cmd,$user->name);
             if($nginxConf === 0){
-                shell_exec(NginxConfigBuilder::restartNginx());
-
                 $this->applicationRepository->applicationSetDeployed($request->project);
                 return (new ApiResponse())->success([
                     'project'=>$request->project,
