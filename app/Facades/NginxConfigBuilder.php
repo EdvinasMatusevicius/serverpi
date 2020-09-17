@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Facade;
 *@method static string phpApplicationCmd($user,$project,$rootCustom)
 *@method static string vueBuiltApplicationCmd(string $user,string $project, string $rootCustom)
 *@method static string deleteNginxConfig($project)
-*@method static string restartNginx()
 *
 **/
 

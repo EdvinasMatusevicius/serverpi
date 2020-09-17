@@ -103,20 +103,6 @@ class ShellController extends Controller
         return $this->tryCatchBlock($request->project,'customArtisan',$request->artisanCmd);
 
     }
-    public function nginx_restart(Request $request){
-        $user=auth()->user();
-        
-        $cmd = NginxConfigBuilder::restartNginx();
-        $nginxRestart = ShellOutput::writeToFile($cmd,$user->name);
-        if($nginxRestart === 0){
-
-            return (new ApiResponse())->success([
-                'project'=>$request->project,
-            ]);
-        }
-        return (new ApiResponse())->exception('Restart failed');
-
-    }
     public function nginx_config(Request $request){
       if($this->applicationRepository->applicationIsDeployed($request->project) !== '1'){  
           try {
