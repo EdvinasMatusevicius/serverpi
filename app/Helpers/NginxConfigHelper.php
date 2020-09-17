@@ -65,8 +65,11 @@ class NginxConfigHelper
         public function deleteNginxConfig($project){
                 return "cd /etc/nginx/sites-available && rm '{$project}'.conf && cd /etc/nginx/sites-enabled &&  rm '{$project}'.conf";
         }
+        public function restartNginx(){
+                return "sudo /usr/sbin/service nginx restart";
+        }
         private function nginxConfigCreateAndLinkCmd($configData,$project){
-                return "cd /etc/nginx/sites-available && printf '{$configData}' > {$project}.conf && ln -s /etc/nginx/sites-available/{$project}.conf /etc/nginx/sites-enabled/ && sudo /usr/sbin/service nginx restart";
+                return "cd /etc/nginx/sites-available && printf '{$configData}' > {$project}.conf && ln -s /etc/nginx/sites-available/{$project}.conf /etc/nginx/sites-enabled/";
         }
 
 }

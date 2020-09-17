@@ -124,13 +124,19 @@ class ShellController extends Controller
                     break;
             }
             $cmd =  NginxConfigBuilder::$fnName($user->name,$request->project,$request->path);
-            $stream = ShellOutput::writeToFile($cmd,$user->name);
-            if($stream === 0){
-                $this->applicationRepository->applicationSetDeployed($request->project);
-                return (new ApiResponse())->success([
-                    'project'=>$request->project,
-                ]);
+            $nginxConf = ShellOutput::writeToFile($cmd,$user->name);
+            if($nginxConf === 0){
+                $restartCmd = NginxConfigBuilder::restartNginx();
+                $restartNginx = ShellOutput::writeToFile($restartCmd,$user->name);
+                
+                if($restartNginx === 0){
+                    $this->applicationRepository->applicationSetDeployed($request->project);
+                    return (new ApiResponse())->success([
+                        'project'=>$request->project,
+                        ]);
+                }
             }
+            throw new Exception('Failed to set app\'s nginx configuration');
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
 
