@@ -104,10 +104,18 @@ class ShellController extends Controller
 
     }
     public function nginx_restart(Request $request){
-        shell_exec(NginxConfigBuilder::restartNginx());
-        return (new ApiResponse())->success([
-            'project'=>$request->project,
-        ]);
+        $user=auth()->user();
+        
+        $cmd = NginxConfigBuilder::restartNginx();
+        $nginxRestart = ShellOutput::writeToFile($cmd,$user->name);
+        if($nginxRestart === 0){
+
+            return (new ApiResponse())->success([
+                'project'=>$request->project,
+            ]);
+        }
+        return (new ApiResponse())->exception('Restart failed');
+
     }
     public function nginx_config(Request $request){
       if($this->applicationRepository->applicationIsDeployed($request->project) !== '1'){  
