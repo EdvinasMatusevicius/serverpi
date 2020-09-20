@@ -32,6 +32,15 @@ class ApplicationRepository
         return $filteredApplications->toArray();
 
     }
+    public function allApplicationsAndUsersList(){
+        $apps =Application::with('owner')->get();
+        $appUserInfo = $apps->map(function($app){
+            $appInfo = $app->only(['applicationName','slug','language']);
+            $user = $app->only('owner')['owner']->only('name');
+            return array_merge($appInfo,$user);
+        });
+        return $appUserInfo->toArray();
+    }
     public function applicationBelongsToUser($application){
         $user = Auth::user();
         $userApp = false;

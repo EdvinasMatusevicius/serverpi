@@ -23,7 +23,7 @@ Auth::routes(); //add except for at the moment unecesery routes   delete/update 
 
 
 Route::middleware('auth:web')->group(function(){
-    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/home', 'HomeController@applistTest')->name('home');
 
     Route::namespace('Application')->group(function(){
         Route::get('/new-application', 'ApplicationController@index')->name('newApplication');

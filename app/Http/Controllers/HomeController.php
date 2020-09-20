@@ -15,11 +15,14 @@ class HomeController extends Controller
      */
     public function __construct(ApplicationRepository $applicationRepository)
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
         $this->applicationRepository=$applicationRepository;
     }
 
-    
+    public function applistTest(){
+        $apps = $this->applicationRepository->allApplicationsAndUsersList();
+        dd($apps);
+    }
     public function index()
     {
         $userApplications = $this->applicationRepository->userApplicationsList();
