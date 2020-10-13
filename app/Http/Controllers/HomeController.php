@@ -20,7 +20,7 @@ class HomeController extends Controller
     }
 
     public function applistTest(){
-        $apps = $this->applicationRepository->allApplicationsAndUsersList();
+        $apps = $this->applicationRepository->allSharedApplicationsAndUsersList();
         dd($apps);
     }
     public function index()

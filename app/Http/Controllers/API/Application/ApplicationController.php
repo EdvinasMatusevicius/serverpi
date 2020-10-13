@@ -61,6 +61,16 @@ class ApplicationController extends Controller
            return (new ApiResponse())->exception($exception->getMessage());
         }
     }
+    public function getSharedAppsWithUsername(){
+        try {
+            $deplyedAppAndUserList = $this->applicationRepository->allSharedApplicationsAndUsersList();
+            return (new ApiResponse())->success([
+                'appsWithUsersList'=> $deplyedAppAndUserList
+             ]);
+        } catch (Exception $exception) {
+            return (new ApiResponse())->exception($exception->getMessage());
+        }
+    }
     public function getAppDatabase(Request $request){
         try {
             $appDatabase = $this->applicationRepository->applicationHasDatabase($request->project);

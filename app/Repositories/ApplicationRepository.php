@@ -32,8 +32,10 @@ class ApplicationRepository
         return $filteredApplications->toArray();
 
     }
-    public function allApplicationsAndUsersList(){
-        $apps =Application::with('owner')->get();
+    public function allSharedApplicationsAndUsersList(){
+        $apps =Application::with('owner')
+        ->where('share','=',true)
+        ->where('deployed','=',true)->get();
         $appUserInfo = $apps->map(function($app){
             $appInfo = $app->only(['applicationName','slug','language']);
             $user = $app->only('owner')['owner']->only('name');

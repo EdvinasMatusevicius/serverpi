@@ -14,7 +14,8 @@ class Application extends Model
         'language',
         'deployed',
         'giturl',
-        'database'
+        'database',
+        'share'
     ];
     public function owner():BelongsTo
     {

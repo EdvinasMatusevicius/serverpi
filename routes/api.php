@@ -35,7 +35,11 @@ Route::namespace('API\Auth')->prefix('auth')->group(function (){
 
     });
 });
-
+Route::namespace('API')->group(function(){
+    Route::namespace('Application')->group(function(){
+        Route::get('/shared-apps','ApplicationController@getSharedAppsWithUsername');
+    });
+});
 Route::namespace('API')->middleware('auth:api')->group(function (){
     
     Route::delete('user/delete','AccountController@delete');
