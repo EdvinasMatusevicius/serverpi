@@ -61,6 +61,24 @@ class ApplicationController extends Controller
            return (new ApiResponse())->exception($exception->getMessage());
         }
     }
+    public function setShareStatus(Request $request){
+        try {
+            $this->applicationRepository->setShareStatus($request->project,$request->boolean('share'));
+            return (new ApiResponse())->success('Share status updated');
+        } catch (Exception $exception) {
+            return (new ApiResponse())->exception($exception->getMessage());
+        }
+    }
+    public function getShareStatus(Request $request){
+        try {
+            $shareStatus = $this->applicationRepository->getShareStatus($request->project);
+            return (new ApiResponse())->success([
+                'share'=> $shareStatus
+             ]);
+        } catch (Exception $exception) {
+            return (new ApiResponse())->exception($exception->getMessage());
+        }
+    }
     public function getSharedAppsWithUsername(){
         try {
             $deplyedAppAndUserList = $this->applicationRepository->allSharedApplicationsAndUsersList();

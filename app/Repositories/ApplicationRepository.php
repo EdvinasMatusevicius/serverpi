@@ -32,6 +32,13 @@ class ApplicationRepository
         return $filteredApplications->toArray();
 
     }
+    public function setShareStatus(string $slug,bool $status){
+        return Application::where('slug', '=', $slug)
+        ->update(['share'=>$status]);
+    }
+    public function getShareStatus(string $slug){
+        return Application::where('slug', '=', $slug)->value('share');
+    }
     public function allSharedApplicationsAndUsersList(){
         $apps =Application::with('owner')
         ->where('share','=',true)

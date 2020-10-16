@@ -48,6 +48,8 @@ Route::namespace('API')->middleware('auth:api')->group(function (){
         Route::post('/new-application', 'ApplicationController@create')->name('newApplicationCreate');
         Route::get('/app-list', 'ApplicationController@getAppList');
         Route::middleware('checkOwner')->group(function(){
+            Route::post('/{project}/share', 'ApplicationController@setShareStatus');
+            Route::get('/{project}/share-status', 'ApplicationController@getShareStatus');
             Route::get('/{project}/database', 'ApplicationController@getAppDatabase');
             Route::delete('/{project}/delete_app', 'ApplicationController@deleteApp');
         });
