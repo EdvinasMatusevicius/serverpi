@@ -39,6 +39,9 @@ class ApplicationRepository
     public function getShareStatus(string $slug){
         return Application::where('slug', '=', $slug)->value('share');
     }
+    public function saveAppImagePath(string $slug,string $path){
+        Application::where('slug', '=', $slug)->update(['image'=>$path]);
+    }
     public function allSharedApplicationsAndUsersList(){
         $apps =Application::with('owner')
         ->where('share','=',true)

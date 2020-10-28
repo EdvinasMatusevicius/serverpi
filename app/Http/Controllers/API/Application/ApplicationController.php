@@ -7,6 +7,7 @@ use App\Facades\ShellCmdBuilder;
 use App\Facades\ShellOutput;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\ApplicationStoreRequest;
+use App\Http\Requests\ApplicationImageStoreRequest;
 use App\Http\Responses\ApiResponse;
 use App\Repositories\ApplicationRepository;
 use Exception;
@@ -98,6 +99,16 @@ class ApplicationController extends Controller
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
          }
+    }
+    public function saveAppImage(ApplicationImageStoreRequest $request){
+        try {
+             $image = $request->file('image');
+             $path = $image->store('appImages');
+             $this->applicationRepository->saveAppImagePath($request->project,$path);
+             return (new ApiResponse())->success('Image saved');
+        } catch (Exception $exception) {
+            return (new ApiResponse())->exception($exception->getMessage());
+        }
     }
     public function deleteApp(Request $request){
         try{

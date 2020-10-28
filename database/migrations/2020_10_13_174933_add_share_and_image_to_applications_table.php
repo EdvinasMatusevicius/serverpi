@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddShareToApplicationsTable extends Migration
+class AddShareAndImageToApplicationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,6 +15,7 @@ class AddShareToApplicationsTable extends Migration
     {
         Schema::table('applications', function (Blueprint $table) {
             $table->boolean('share')->default(0);
+            $table->string('image',300)->nullable();
         });
     }
 
