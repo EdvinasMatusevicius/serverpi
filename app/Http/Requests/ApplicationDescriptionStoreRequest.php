@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ApplicationImageStoreRequest extends FormRequest
+class ApplicationDescriptionStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class ApplicationImageStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'image'=>'required|image|max:512'
+            'description'=>'required|string|max:300'
         ];
     }
 }

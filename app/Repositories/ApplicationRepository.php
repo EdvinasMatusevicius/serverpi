@@ -39,15 +39,21 @@ class ApplicationRepository
     public function getShareStatus(string $slug){
         return Application::where('slug', '=', $slug)->value('share');
     }
-    public function saveAppImagePath(string $slug,string $path){
+    public function saveAppImagePath(string $slug,?string $path=null){
         Application::where('slug', '=', $slug)->update(['image'=>$path]);
+    }
+    public function getAppImagePath(string $slug){
+        return Application::where('slug', '=', $slug)->value('image');
+    }
+    public function saveAppDescription(string $slug,?string $desc=null){
+        Application::where('slug', '=', $slug)->update(['description'=>$desc]);
     }
     public function allSharedApplicationsAndUsersList(){
         $apps =Application::with('owner')
         ->where('share','=',true)
         ->where('deployed','=',true)->get();
         $appUserInfo = $apps->map(function($app){
-            $appInfo = $app->only(['applicationName','slug','language']);
+            $appInfo = $app->only(['applicationName','slug','language','image']);
             $user = $app->only('owner')['owner']->only('name');
             return array_merge($appInfo,$user);
         });

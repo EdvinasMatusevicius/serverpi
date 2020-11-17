@@ -50,6 +50,7 @@ Route::namespace('API')->middleware('auth:api')->group(function (){
         Route::middleware('checkOwner')->group(function(){
             Route::post('/{project}/share', 'ApplicationController@setShareStatus');
             Route::post('/{project}/image', 'ApplicationController@saveAppImage');
+            Route::post('/{project}/description', 'ApplicationController@saveAppDescription');
             Route::get('/{project}/share-status', 'ApplicationController@getShareStatus');
             Route::get('/{project}/database', 'ApplicationController@getAppDatabase');
             Route::delete('/{project}/delete_app', 'ApplicationController@deleteApp');

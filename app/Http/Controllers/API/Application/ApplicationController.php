@@ -7,12 +7,14 @@ use App\Facades\ShellCmdBuilder;
 use App\Facades\ShellOutput;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\ApplicationStoreRequest;
+use App\Http\Requests\ApplicationDescriptionStoreRequest;
 use App\Http\Requests\ApplicationImageStoreRequest;
 use App\Http\Responses\ApiResponse;
 use App\Repositories\ApplicationRepository;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ApplicationController extends Controller
@@ -102,10 +104,20 @@ class ApplicationController extends Controller
     }
     public function saveAppImage(ApplicationImageStoreRequest $request){
         try {
-             $image = $request->file('image');
-             $path = $image->store('appImages');
-             $this->applicationRepository->saveAppImagePath($request->project,$path);
-             return (new ApiResponse())->success('Image saved');
+            $image = $request->file('image');
+            $path = $image->store('appImages');
+            //if old image exists, deletes it
+            $this->deleteAppImage($request->project);
+            $this->applicationRepository->saveAppImagePath($request->project,$path);
+            return (new ApiResponse())->success('Image saved');
+        } catch (Exception $exception) {
+            return (new ApiResponse())->exception($exception->getMessage());
+        }
+    }
+    public function saveAppDescription(ApplicationDescriptionStoreRequest $request){
+        try {
+            $this->applicationRepository->saveAppDescription($request->project,$request->description);
+            return (new ApiResponse())->success('Description saved');
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
         }
@@ -127,5 +139,12 @@ class ApplicationController extends Controller
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
          }
+    }
+    private function deleteAppImage(string $slug){
+        $imgRoute = $this->applicationRepository->getAppImagePath($slug);
+        if(Storage::exists($imgRoute)){
+            Storage::delete($imgRoute);
+            $this->applicationRepository->saveAppImagePath($slug);
+        }
     }
 }

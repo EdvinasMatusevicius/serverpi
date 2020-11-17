@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddShareAndImageToApplicationsTable extends Migration
+class AddShareImageDescriptionToApplicationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -16,6 +16,7 @@ class AddShareAndImageToApplicationsTable extends Migration
         Schema::table('applications', function (Blueprint $table) {
             $table->boolean('share')->default(0);
             $table->string('image',300)->nullable();
+            $table->text('description')->nullable();
         });
     }
 
@@ -28,6 +29,8 @@ class AddShareAndImageToApplicationsTable extends Migration
     {
         Schema::table('applications', function (Blueprint $table) {
             $table->dropColumn(['share']);
+            $table->dropColumn(['image']);
+            $table->dropColumn(['description']);
         });
     }
 }
