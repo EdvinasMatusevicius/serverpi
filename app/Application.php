@@ -15,7 +15,8 @@ class Application extends Model
         'deployed',
         'giturl',
         'database',
-        'share'
+        'share',
+        'image'
     ];
     public function owner():BelongsTo
     {

@@ -144,7 +144,7 @@ class ApplicationController extends Controller
         $imgRoute = $this->applicationRepository->getAppImagePath($slug);
         if(Storage::exists($imgRoute)){
             Storage::delete($imgRoute);
-            $this->applicationRepository->saveAppImagePath($slug);
+            $this->applicationRepository->saveAppImagePath($slug); //sets path to null
         }
     }
 }

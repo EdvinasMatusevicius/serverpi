@@ -20,6 +20,13 @@ class UserRepository
          */
         $user->update(['has_db_user'=>1]);
     }
+    public function saveUserLogoPath(?string $path = null){
+        $user = Auth::user();
+        /**
+         * @var Authenticatable $user 
+         */
+        $user->update(['logo'=>$path]);
+    }
     public function deleteUser($request){
         $user = User::find(Auth::user()->id);
         UserFacade::logout($request);

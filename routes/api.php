@@ -42,6 +42,7 @@ Route::namespace('API')->group(function(){
 });
 Route::namespace('API')->middleware('auth:api')->group(function (){
     
+    Route::post('user/logo','AccountController@saveIcon');
     Route::delete('user/delete','AccountController@delete');
 
     Route::namespace('Application')->group(function(){
