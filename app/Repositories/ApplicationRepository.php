@@ -53,7 +53,7 @@ class ApplicationRepository
         ->where('share','=',true)
         ->where('deployed','=',true)->get();
         $appUserInfo = $apps->map(function($app){
-            $appInfo = $app->only(['applicationName','slug','language','image']);
+            $appInfo = $app->only(['applicationName','slug','language','image','description','giturl']);
             $user = $app->only('owner')['owner']->only('name');
             return array_merge($appInfo,$user);
         });

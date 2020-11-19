@@ -15,7 +15,7 @@ class AddShareImageDescriptionToApplicationsTable extends Migration
     {
         Schema::table('applications', function (Blueprint $table) {
             $table->boolean('share')->default(0);
-            $table->string('image',300)->nullable();
+            $table->string('image',500)->nullable();
             $table->text('description')->nullable();
         });
     }
