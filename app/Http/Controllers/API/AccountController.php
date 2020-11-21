@@ -29,14 +29,14 @@ class AccountController extends Controller
             $logo = $request->file('logo');
             $path = $logo->store('userLogos');
             $this->deleteLogo();
-            $this->userRepository->saveUserLogoPath($path);
+            $this->userRepository->saveUserLogoPath("storage/$path");
             return (new ApiResponse())->success('Image saved');
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
         }
 
     }
-    //ISTRINTI NGINX CONF 
+
     public function delete(Request $request){
         try {
             $user=Auth::user();

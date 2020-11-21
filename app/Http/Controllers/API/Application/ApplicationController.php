@@ -108,7 +108,7 @@ class ApplicationController extends Controller
             $path = $image->store('appImages');
             //if old image exists, deletes it
             $this->deleteAppImage($request->project);
-            $this->applicationRepository->saveAppImagePath($request->project,$path);
+            $this->applicationRepository->saveAppImagePath($request->project,"storage/$path");
             return (new ApiResponse())->success('Image saved');
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
