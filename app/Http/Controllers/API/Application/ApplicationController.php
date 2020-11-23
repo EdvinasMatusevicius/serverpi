@@ -122,6 +122,14 @@ class ApplicationController extends Controller
             return (new ApiResponse())->exception($exception->getMessage());
         }
     }
+    public function getAppDescription(Request $request){
+        try {
+            $description = $this->applicationRepository->getAppDescription($request->project);
+            return (new ApiResponse())->success($description);
+        } catch (Exception $exception) {
+            return (new ApiResponse())->exception($exception->getMessage());
+        }
+    }
     public function deleteApp(Request $request){
         try{
             $user=auth()->user();

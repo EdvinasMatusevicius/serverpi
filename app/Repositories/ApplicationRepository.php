@@ -48,6 +48,9 @@ class ApplicationRepository
     public function saveAppDescription(string $slug,?string $desc=null){
         Application::where('slug', '=', $slug)->update(['description'=>$desc]);
     }
+    public function getAppDescription(string $slug){
+        return Application::where('slug', '=', $slug)->value('description');
+    }
     public function allSharedApplicationsAndUsersList(){
         $apps =Application::with('owner')
         ->where('share','=',true)
