@@ -57,7 +57,7 @@ class ApplicationRepository
         ->where('deployed','=',true)->get();
         $appUserInfo = $apps->map(function($app){
             $appInfo = $app->only(['applicationName','slug','language','image','description','giturl']);
-            $user = $app->only('owner')['owner']->only('name');
+            $user = $app->only('owner')['owner']->only(['name','logo']);
             return array_merge($appInfo,$user);
         });
         return $appUserInfo->toArray();
