@@ -142,7 +142,7 @@ class ShellController extends Controller
 
            if($stream === 0){ 
                     if($command === 'dbAndUserCreate'){
-                        $this->userRepository->updateRepositoryUser();
+                        $this->userRepository->updateRepositoryUser();//TEST IN RASPBERY IF DB SHELL COMMANDS WORK
                     }
                     if($command === 'dbAndUserCreate' || $command === 'dbAndPrivilegeCreate') {
                         $this->applicationRepository->applicationAddDatabase($project);
